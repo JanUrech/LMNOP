@@ -1,0 +1,29 @@
+// Mockup-Daten für die News-Sections
+const topics = [
+  {
+    title: "Politik",
+    description: "Aktuelle Entwicklungen und Hintergründe zur nationalen und internationalen Politik.",
+    articles: [
+      { title: "Neue Reform beschlossen" },
+      { title: "Internationale Konferenz in Berlin" }
+    ]
+  },
+  {
+    title: "Technologie",
+    description: "Die neuesten Trends aus der Welt von KI, Start-ups und digitalen Innovationen.",
+    articles: [
+      { title: "Neues Smartphone vorgestellt" },
+      { title: "Durchbruch bei Quantencomputern" },
+      { title: "Durchbruch bei Quantencomputern2" },
+      { title: "Durchbruch bei Quantencomputern3" }
+    ]
+  },
+  {
+    title: "Sport",
+    description: "Ergebnisse, Analysen und Stimmen zum aktuellen Sportgeschehen.",
+    articles: [
+      { title: "Team X gewinnt Meisterschaft" },
+      { title: "Rekord im Marathon gebrochen" }
+    ]
+  }
+];
