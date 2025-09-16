@@ -1,0 +1,73 @@
+/* Basis-Design */
+body {
+    font-family: sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 2rem;
+    color: #222;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.topicSection {
+    position: relative;
+    /* wichtig für absolute Positionierung der Post-its */
+    width: 70vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20vh;
+    height: 50vh;
+    /* für den Anfang feste Höhe */
+}
+
+/* Titel */
+.topicTitle {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.heroArticle {
+    background: #2f596e;
+    color: #fff;
+    padding: 2rem;
+    text-align: center;
+
+    position: relative;
+    /* wichtig: Post-its orientieren sich jetzt an der Box */
+    width: 70%;
+    aspect-ratio: 7 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Post-it */
+.sideArticle {
+    --side: left;
+    /* oder right */
+    --y: 0px;
+    --rot: 0deg;
+
+    position: absolute;
+    top: 50%;
+    /* links oder rechts am Rand kleben */
+    left: var(--posX, 0%);
+
+    transform: translate(-50%, calc(-50% + var(--y))) rotate(var(--rot));
+
+    width: 25%;
+    aspect-ratio: 2/3;
+    background: #d1733c;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
