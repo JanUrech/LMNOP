@@ -34,13 +34,21 @@ topics.forEach(topic => {
 
       if (idx === 0) {
         side.style.setProperty("--posX", "0%");
-        side.style.setProperty("--y", "-20px");
-        side.style.setProperty("--rot", "-4deg");
+    // Zufällige vertikale Position zwischen -60px und 60px
+    const randY = Math.floor(Math.random() * 121) - 60;
+        side.style.setProperty("--y", randY + "px");
+        // Zufällige Rotation zwischen -8deg und 8deg
+        const randRot = (Math.random() * 16 - 8).toFixed(1);
+        side.style.setProperty("--rot", randRot + "deg");
         hero.appendChild(side);
       } else if (idx === 1) {
         side.style.setProperty("--posX", "100%");
-        side.style.setProperty("--y", "40px");
-        side.style.setProperty("--rot", "3deg");
+    // Zufällige vertikale Position zwischen -60px und 60px
+    const randY = Math.floor(Math.random() * 121) - 60;
+        side.style.setProperty("--y", randY + "px");
+        // Zufällige Rotation zwischen -8deg und 8deg
+        const randRot = (Math.random() * 16 - 8).toFixed(1);
+        side.style.setProperty("--rot", randRot + "deg");
         hero.appendChild(side);
       } else {
         // Bottom-Artikel in Flexbox-Container
