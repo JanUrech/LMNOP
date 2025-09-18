@@ -12,9 +12,32 @@ topics.forEach(topic => {
   h1.textContent = topic.title;
   section.appendChild(h1);
 
+
   // Hero-Artikel
   const hero = document.createElement("article");
   hero.classList.add("heroArticle");
+
+
+  // Erzeuge einen URL-freundlichen Titel
+  const urlTitle = topic.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  const overviewUrl = `../overviews/overview-${urlTitle}.html`;
+
+  // Hero-Artikel klickbar machen
+  hero.style.cursor = "pointer";
+  hero.addEventListener("click", function(e) {
+    // Nur weiterleiten, wenn nicht auf einen Link im Hero geklickt wurde
+    if (e.target.tagName !== "A") {
+      window.location.href = overviewUrl;
+    }
+  });
+
+  // Optional: Link weiterhin anzeigen
+  const overviewLink = document.createElement("a");
+  overviewLink.href = overviewUrl;
+  overviewLink.textContent = "Zur Übersicht";
+  overviewLink.style.display = "block";
+  overviewLink.style.marginBottom = "1rem";
+  hero.appendChild(overviewLink);
 
   const p = document.createElement("p");
   p.textContent = topic.description;

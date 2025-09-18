@@ -1,6 +1,11 @@
 body {
     font-family: sans-serif;
     background: #fff;
+    background-image: url('media/Background\ Webpage\ LMNOP.svg');
+    /* Passe den Dateinamen ggf. an */
+    background-repeat: no-repeat;
+    background-size: 100vw auto;
+    background-position: top center;
     margin: 0;
     padding: 2rem;
     color: #222;
@@ -14,6 +19,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-top: 20vh;
+    margin-bottom: 20vh;
     height: 50vh;
 }
 
@@ -68,17 +74,20 @@ body {
     left: 50%;
     top: 100%;
     transform: translate(-50%, 0);
-    width: 70%; /* gleiche Breite wie .heroArticle */
+    width: 70%;
+    /* gleiche Breite wie .heroArticle */
     display: flex;
-    justify-content: space-evenly; /* gleichmäßig verteilen */
+    justify-content: space-evenly;
+    /* gleichmäßig verteilen */
     align-items: flex-end;
     gap: 1rem;
 }
 
 .sideArticleBottom {
     /* Positionierung entfernen, Flexbox übernimmt */
-    flex: 1; 
-    max-width: 25%; /* optional, verhindert Überbreite */
+    flex: 1;
+    max-width: 25%;
+    /* optional, verhindert Überbreite */
     aspect-ratio: 2/3;
     background: #d1733c;
     color: #fff;
@@ -88,4 +97,3 @@ body {
     padding: 1rem;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
-
