@@ -1,99 +1,126 @@
+/* ================================
+   GLOBALS – Grundlayout der Seite
+   ================================ */
 body {
     font-family: sans-serif;
-    background: #fff;
-    background-image: url('media/Background\ Webpage\ LMNOP.svg');
-    /* Passe den Dateinamen ggf. an */
-    background-repeat: no-repeat;
+    background-color: #fff;
+
+    /* Hintergrundbild oben zentriert, darf sich wiederholen falls nötig */
+    background-image: url('media/Background Webpage LMNOP.svg');
+    background-repeat: repeat-y;
     background-size: 100vw auto;
     background-position: top center;
+
     margin: 0;
     padding: 2rem;
-    color: #222;
+
+    /* Inhalt vertikal anordnen */
     display: flex;
     flex-direction: column;
 }
 
+/* ================================
+   SECTION – Thematische Container
+   ================================ */
 .topicSection {
     position: relative;
-    width: 70vw;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20vh;
-    margin-bottom: 20vh;
-    height: 50vh;
+    width: 80vw;
+    max-width: 700px;
+    margin: 6vh auto; /* zentriert und vertikale Abstände */
+    height: auto;
 }
 
-/* Titel */
+/* ================================
+   TITEL – Überschrift eines Abschnitts
+   ================================ */
 .topicTitle {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
 }
 
+/* ================================
+   HERO – Zentrale Hauptfläche
+   ================================ */
 .heroArticle {
+    position: relative; /* für absolute Positionierung der sideArticles */
+    width: 100%;
+    aspect-ratio: 7 / 4;
+    padding: 1rem;
+
     background: #0A4708;
     color: #fff;
-    padding: 2rem;
     text-align: center;
 
-    position: relative;
-    width: 70%;
-    aspect-ratio: 7 / 4;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
+
+    margin: 0 auto;
+    box-sizing: border-box;
+
+    /* wichtige Voraussetzung für sichtbare sideArticles */
+    overflow: visible;
 }
 
+/* ================================
+   SIDE-ARTICLES – Zusätzliche Inhalte
+   ================================ */
+
+/* Mobile-Version: Articles unter dem Hero zentriert und leicht überlappend */
 .sideArticle {
-    --side: left;
-    --y: 0px;
-    --rot: 0deg;
-    position: absolute;
-    top: 50%;
-    left: var(--posX, 0%);
-    transform: translate(-50%, calc(-50% + var(--y))) rotate(var(--rot));
-    width: 25%;
-    aspect-ratio: 2/3;
+    position: absolute; /* relativ zur heroArticle */
+    top: 100%;           /* unterhalb des Hero */
+    left: 50%;           /* mittig ausrichten */
+    transform: translate(-110%, -20%) rotate(var(--rot, 0deg)); 
+    /* leicht links verschoben und überlappend (nach oben gezogen) */
+
+    width: 30%;
+    max-width: 180px;
+    aspect-ratio: 2 / 3;
+
     background: #F3C4F7;
-    border-style: solid;
-    border-width: 3px;
-    border-color: black;
-    color: #000;
+    border: none;
+    padding: 1rem;
+    margin: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 1rem;
+
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    z-index: 2;
 }
 
-/* Flexbox für Bottom-Artikel */
-.sideArticlesBottomBox {
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    transform: translate(-50%, 0);
-    width: 70%;
-    /* gleiche Breite wie .heroArticle */
-    display: flex;
-    justify-content: space-evenly;
-    /* gleichmäßig verteilen */
-    align-items: flex-end;
-    gap: 1rem;
+/* Zweites SideArticle bekommt eigene Transformation */
+.sideArticle:nth-of-type(2) {
+    transform: translate(10%, -20%) rotate(var(--rot, 0deg));
+    /* leicht rechts, selbe Überlappung */
 }
 
-.sideArticleBottom {
-    /* Positionierung entfernen, Flexbox übernimmt */
-    flex: 1;
-    max-width: 25%;
-    /* optional, verhindert Überbreite */
-    aspect-ratio: 2/3;
-    background: #d1733c;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+/* ================================
+   DESKTOP-ANPASSUNG – Ab 900px
+   ================================ */
+@media (min-width: 900px) {
+    .topicSection {
+        width: 70vw;
+        max-width: none;
+        margin: 20vh auto;
+    }
+
+    .heroArticle {
+        width: 70%;
+        padding: 2rem;
+    }
+
+    .sideArticle {
+        /* Positionierung über CSS-Variablen für flexible Gestaltung */
+        top: 50%;
+        left: var(--posX, 0%);
+        transform: translate(-50%, calc(-50% + var(--y, 0px))) rotate(var(--rot, 0deg));
+
+        width: 25%;
+        max-width: none;
+        margin: 0;
+    }
 }
