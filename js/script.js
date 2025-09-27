@@ -6,6 +6,10 @@ topics.forEach(topic => {
   const section = document.createElement("section");
   section.classList.add("topicSection");
 
+  // Erzeuge einen URL-freundlichen Titel für ID und Links
+  const urlTitle = topic.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  section.id = urlTitle; // <--- Section bekommt ID
+
   // Titel
   const h1 = document.createElement("h1");
   h1.classList.add("topicTitle");
@@ -16,15 +20,11 @@ topics.forEach(topic => {
   const hero = document.createElement("article");
   hero.classList.add("heroArticle");
 
-
-  // Erzeuge einen URL-freundlichen Titel
-  const urlTitle = topic.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   const overviewUrl = `../overviews/overview-${urlTitle}.html`;
 
   // Hero-Artikel klickbar machen
   hero.style.cursor = "pointer";
   hero.addEventListener("click", function(e) {
-    // Nur weiterleiten, wenn nicht auf einen Link im Hero geklickt wurde
     if (e.target.tagName !== "A") {
       window.location.href = overviewUrl;
     }
@@ -41,7 +41,6 @@ topics.forEach(topic => {
   const p = document.createElement("p");
   p.textContent = topic.description;
   hero.appendChild(p);
-
 
   // Nur die ersten zwei Artikel anzeigen
   topic.articles.slice(0, 2).forEach((article, idx) => {
@@ -66,3 +65,6 @@ topics.forEach(topic => {
   section.appendChild(hero);
   main.appendChild(section);
 });
+
+
+

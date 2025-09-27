@@ -26,7 +26,9 @@ body {
     position: relative;
     width: 80vw;
     max-width: 700px;
-    margin: 6vh auto; /* zentriert und vertikale Abstände */
+    margin: 6vh auto;
+    /* zentriert und vertikale Abstände */
+    margin-bottom: 40vw;
     height: auto;
 }
 
@@ -42,7 +44,8 @@ body {
    HERO – Zentrale Hauptfläche
    ================================ */
 .heroArticle {
-    position: relative; /* für absolute Positionierung der sideArticles */
+    position: relative;
+    /* für absolute Positionierung der sideArticles */
     width: 100%;
     aspect-ratio: 7 / 4;
     padding: 1rem;
@@ -69,10 +72,13 @@ body {
 
 /* Mobile-Version: Articles unter dem Hero zentriert und leicht überlappend */
 .sideArticle {
-    position: absolute; /* relativ zur heroArticle */
-    top: 100%;           /* unterhalb des Hero */
-    left: 50%;           /* mittig ausrichten */
-    transform: translate(-110%, -20%) rotate(var(--rot, 0deg)); 
+    position: absolute;
+    /* relativ zur heroArticle */
+    top: 100%;
+    /* unterhalb des Hero */
+    left: 50%;
+    /* mittig ausrichten */
+    transform: translate(-110%, -20%) rotate(var(--rot, 0deg));
     /* leicht links verschoben und überlappend (nach oben gezogen) */
 
     width: 30%;
@@ -99,6 +105,43 @@ body {
 }
 
 /* ================================
+  Menü
+   ================================ */
+menu {
+    display: none;
+    position: fixed;
+    top: 40vh;
+    left: 0;
+    width: 25%;
+    z-index: 1000;
+}
+
+.menuItem{
+display: flex;
+width: max-content;
+padding: 0rem 1rem;
+margin-bottom: 10px;
+color: black;
+font-variant: ;
+
+}
+
+.menuItem:hover {
+    background-color: #F3C4F7;
+    
+}
+
+.menuItem a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.menuItem a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ================================
    DESKTOP-ANPASSUNG – Ab 900px
    ================================ */
 @media (min-width: 900px) {
@@ -106,6 +149,11 @@ body {
         width: 70vw;
         max-width: none;
         margin: 20vh auto;
+    }
+
+    menu {
+        display: block;
+        padding: 1rem 2rem;
     }
 
     .heroArticle {
