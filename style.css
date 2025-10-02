@@ -2,8 +2,8 @@
    GLOBALS – Grundlayout der Seite
    ================================ */
 body {
-    font-family: sans-serif;
-    background-color: #fff;
+    font-family: "itc-avant-garde-gothic-pro", sans-serif;
+    font-weight: 300;
 
     /* Hintergrundbild oben zentriert, darf sich wiederholen falls nötig */
     background-image: url('media/Background Webpage LMNOP.svg');
@@ -17,6 +17,47 @@ body {
     /* Inhalt vertikal anordnen */
     display: flex;
     flex-direction: column;
+}
+
+p {
+    font-family: "itc-avant-garde-gothic-pro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* ================================
+   Header 
+   ================================ */
+header {
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+    flex-direction: column;
+}
+
+.logoBar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.logoBarText {
+display: none;
+min-width:  35%;
+aspect-ratio: default;
+aspect-ratio: 10 / 1;
+height: auto;
+object-fit: contain;
+}
+
+#headerLogo {
+    height: auto;
+    width: 100%;
+    min-width: 30vw;
+    margin: 0 auto;
+    display: block;
 }
 
 /* ================================
@@ -38,6 +79,10 @@ body {
 .topicTitle {
     font-size: 2rem;
     margin-bottom: 1rem;
+    text-align: center;
+    font-family: "cheee-jimbo", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* ================================
@@ -105,7 +150,7 @@ body {
 }
 
 /* ================================
-  Menü
+  Menü Index-Seite
    ================================ */
 menu {
     display: none;
@@ -116,18 +161,18 @@ menu {
     z-index: 1000;
 }
 
-.menuItem{
-display: flex;
-width: max-content;
-padding: 0rem 1rem;
-margin-bottom: 10px;
-color: black;
-font-variant: bold;
+.menuItem {
+    display: flex;
+    width: max-content;
+    padding: 0rem 1rem;
+    margin-bottom: 10px;
+    color: black;
+    font-weight: 700;
 }
 
 .menuItem:hover {
     background-color: #F3C4F7;
-    
+
 }
 
 .menuItem a {
@@ -149,10 +194,11 @@ font-variant: bold;
     max-width: 300px;
     flex-direction: column;
     align-items: center;
-    margin-top: 2rem;}
+    margin-top: 2rem;
+}
 
 
-   .memberPostit{
+.memberPostit {
     position: absolute;
     /* relativ zur heroArticle */
     top: 70%;
@@ -173,12 +219,14 @@ font-variant: bold;
 
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     z-index: 2;
-   }
+}
 
-   .memberPhotos {
+.memberPhotos {
     position: relative;
-    width: 100%; /* Passe die Größe nach Bedarf an */
-    aspect-ratio: 1/1; /* Quadratisches Verhältnis */
+    width: 100%;
+    /* Passe die Größe nach Bedarf an */
+    aspect-ratio: 1/1;
+    /* Quadratisches Verhältnis */
 }
 
 .memberPhotoStandard,
@@ -190,7 +238,8 @@ font-variant: bold;
     height: 100%;
     object-fit: cover;
     transition: opacity 0.3s;
-    pointer-events: none; /* Verhindert, dass das Bild das Hover blockiert */
+    pointer-events: none;
+    /* Verhindert, dass das Bild das Hover blockiert */
 }
 
 .memberPhotoFisheye {
@@ -210,6 +259,10 @@ font-variant: bold;
    DESKTOP-ANPASSUNG – Ab 900px
    ================================ */
 @media (min-width: 900px) {
+
+.logoBarText {
+    display: flex;}
+
     .topicSection {
         width: 70vw;
         max-width: none;
