@@ -122,8 +122,7 @@ width: max-content;
 padding: 0rem 1rem;
 margin-bottom: 10px;
 color: black;
-font-variant: ;
-
+font-variant: bold;
 }
 
 .menuItem:hover {
@@ -139,6 +138,72 @@ font-variant: ;
 .menuItem a:visited {
     color: inherit;
     text-decoration: none;
+}
+
+/* ================================
+  TEAM MEMBERS
+   ================================ */
+.teamMember {
+    display: flex;
+    width: 100%;
+    max-width: 300px;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;}
+
+
+   .memberPostit{
+    position: absolute;
+    /* relativ zur heroArticle */
+    top: 70%;
+
+    width: 30%;
+    max-width: 180px;
+    aspect-ratio: 2 / 3;
+
+    background: #F3C4F7;
+    border: none;
+    padding: 1rem;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+   }
+
+   .memberPhotos {
+    position: relative;
+    width: 100%; /* Passe die Größe nach Bedarf an */
+    aspect-ratio: 1/1; /* Quadratisches Verhältnis */
+}
+
+.memberPhotoStandard,
+.memberPhotoFisheye {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s;
+    pointer-events: none; /* Verhindert, dass das Bild das Hover blockiert */
+}
+
+.memberPhotoFisheye {
+    opacity: 0;
+    z-index: 2;
+}
+
+.memberPhotos:hover .memberPhotoFisheye {
+    opacity: 1;
+}
+
+.memberPhotos:hover .memberPhotoStandard {
+    opacity: 0;
 }
 
 /* ================================
