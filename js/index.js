@@ -34,7 +34,7 @@ topics.forEach(topic => {
   const overviewLink = document.createElement("a");
   overviewLink.href = overviewUrl;
   overviewLink.textContent = "Zur Übersicht";
-  overviewLink.style.display = "block";
+  overviewLink.style.display = "none";
   overviewLink.style.marginBottom = "1rem";
   hero.appendChild(overviewLink);
 
@@ -47,6 +47,7 @@ topics.forEach(topic => {
     const side = document.createElement("article");
     side.classList.add("sideArticle");
     const h2 = document.createElement("h2");
+    h2.classList.add("sideArticleText");
     h2.textContent = article.title;
     side.appendChild(h2);
 

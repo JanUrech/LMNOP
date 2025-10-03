@@ -48,5 +48,11 @@ postitDiv.style.transform = `rotate(${randRot}deg) translateX(${randX}%)`;
 
     section.appendChild(photoDiv);
     teamMemberList.appendChild(section);
+
+    // Hover-Effekt auch auf Touch-Geräten aktivieren (toggle)
+    photoDiv.addEventListener('touchstart', function (e) {
+        e.preventDefault(); // Verhindert Scrollen beim Tippen
+        photoDiv.classList.toggle('hover');
+    }, {passive: false});
 });
 
