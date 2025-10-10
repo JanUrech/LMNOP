@@ -30,6 +30,15 @@ p {
     font-style: normal;
 }
 
+h1 {
+    font-family: "itc-avant-garde-gothic-pro", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 3rem;
+    margin: 0 0 1rem 0;
+    color: #0A4708;
+}
+
 h6 {
     font-family: "itc-avant-garde-gothic-pro", sans-serif;
     font-weight: 700;
@@ -93,6 +102,7 @@ header {
     color: #0A4708;
     text-decoration: none;
 }
+
 /* ================================
    SECTION – Thematische Container
    ================================ */
@@ -116,6 +126,7 @@ header {
     font-family: "cheee-jimbo", sans-serif;
     font-weight: 400;
     font-style: normal;
+    color: black;
 }
 
 /* ================================
@@ -257,6 +268,27 @@ footer {
 }
 
 /* ================================
+About us
+   ================================ */
+
+#aboutUsMain {
+    padding: 0 10vw;
+    /* mehr Platz unten für SideArticles */
+    flex-grow: 1;
+    /* füllt den verfügbaren Raum zwischen Header und Footer */
+    gap: 4rem;
+}
+
+#teamPhoto {
+    position: relative;
+    width: 80%;
+    /* Passe die Größe nach Bedarf an */
+    margin: 0 auto;
+    height: auto;
+    max-width: 600px;
+}
+
+/* ================================
   TEAM MEMBERS
    ================================ */
 .teamMember {
@@ -273,8 +305,10 @@ footer {
 .teamMemberList {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     align-items: center;
-    gap: 7rem;
+    gap: 4rem;
+    margin-bottom: 100px;
 }
 
 .memberPostit {
@@ -368,8 +402,6 @@ footer {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 4rem;
-        margin: 0 5vw;
     }
 
     .topicSection {
