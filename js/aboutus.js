@@ -29,14 +29,16 @@ teammembers.forEach(member => {
 // Zufällige Rotation zwischen -8deg und +8deg
 const randRot = (Math.random() * 16 - 8).toFixed(1);
 // Zufällige horizontale Verschiebung zwischen -50% und +50%
-const randX = (Math.random() * 150 - 25).toFixed(1);
+const randX = (Math.random() * 150 - 50).toFixed(1);
 postitDiv.style.transform = `rotate(${randRot}deg) translateX(${randX}%)`;
 
     const h2 = document.createElement('h2');
+    h2.classList.add('memberName');
     h2.textContent = member.Name;
 
     const p = document.createElement('p');
-    p.textContent = `Role: ${member.role}`;
+    p.classList.add('memberRole');
+    p.textContent = `Rolle: ${member.role}`;
 
     // Zusammenbauen
     postitDiv.appendChild(h2);
@@ -49,10 +51,22 @@ postitDiv.style.transform = `rotate(${randRot}deg) translateX(${randX}%)`;
     section.appendChild(photoDiv);
     teamMemberList.appendChild(section);
 
-    // Hover-Effekt auch auf Touch-Geräten aktivieren (toggle)
+    // Touch: Toggle hover on tap, close other toggles
     photoDiv.addEventListener('touchstart', function (e) {
-        e.preventDefault(); // Verhindert Scrollen beim Tippen
+        e.preventDefault(); // verhindert direktes Scrollen beim Tippen
+        // entferne 'hover' von allen anderen
+        document.querySelectorAll('.memberPhotos.hover').forEach(el => {
+            if (el !== photoDiv) el.classList.remove('hover');
+        });
+        // toggle für das aktuelle
         photoDiv.classList.toggle('hover');
-    }, {passive: false});
+    }, { passive: false });
 });
+
+// global: Tippen außerhalb schliesst offene Hovers
+document.addEventListener('touchstart', function (e) {
+    if (!e.target.closest('.memberPhotos')) {
+        document.querySelectorAll('.memberPhotos.hover').forEach(el => el.classList.remove('hover'));
+    }
+}, { passive: true });
 

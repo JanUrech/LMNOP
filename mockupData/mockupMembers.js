@@ -3,48 +3,48 @@ const teammembers = [
     Name: "Pascal",
     role: "TeamLead",
     themengebiet: "Gesundheitssystem",
-    fotoStandard: "media/TeamMitglieder/PascalStandard.svg",
-    fotoHover: "media/TeamMitglieder/PascalFisheye.svg"
+    fotoStandard: "media/TeamMitglieder/PascalStandard.JPG",
+    fotoHover: "media/TeamMitglieder/PascalFisheye.JPG"
   },
 
   {
     Name: "Moritz",
     role: "TeamLead",
     themengebiet: "Gesundheitssystem",
-    fotoStandard: "media/TeamMitglieder/MoritzStandard.svg",
-    fotoHover: "media/TeamMitglieder/MoritzFisheye.svg"
+    fotoStandard: "media/TeamMitglieder/MoritzStandard.JPG",
+    fotoHover: "media/TeamMitglieder/MoritzFisheye.JPG"
   },
 
   {
     Name: "Norina",
     role: "TeamLead",
     themengebiet: "Gesundheitssystem",
-    fotoStandard: "media/TeamMitglieder/NorinaStandard.svg",
-    fotoHover: "media/TeamMitglieder/NorinaFisheye.svg"
+    fotoStandard: "media/TeamMitglieder/NorinaStandard.JPG",
+    fotoHover: "media/TeamMitglieder/NorinaFisheye.JPG"
   },
 
   {
     Name: "David",
     role: "TeamLead",
     themengebiet: "Gesundheitssystem",
-    fotoStandard: "media/TeamMitglieder/DavidStandard.svg",
-    fotoHover: "media/TeamMitglieder/DavidFisheye.svg"
+    fotoStandard: "media/TeamMitglieder/DavidStandard.JPG",
+    fotoHover: "media/TeamMitglieder/DavidFisheye.JPG"
   },
 
   {
-    Name: "Murielle",
+    Name: "Marie",
     role: "Social Media-Team",
     themengebiet: "Gesundheitssystem",
-    fotoStandard: "media/TeamMitglieder/MurielleStandard.svg",
-    fotoHover: "media/TeamMitglieder/Murielle Fisheye.svg"
+    fotoStandard: "media/TeamMitglieder/MarieStandard.JPG",
+    fotoHover: "media/TeamMitglieder/MarieFisheye.JPG"
   },
 
   {
     Name: "Janic",
     role: "Webseite-Team",
     themengebiet: "Männlichkeit",
-    fotoStandard: "media/TeamMitglieder/JanicStandard.svg",
-    fotoHover: "media/TeamMitglieder/JanicFisheye.svg"
+    fotoStandard: "media/TeamMitglieder/JanicStandard.JPG",
+    fotoHover: "media/TeamMitglieder/JanicFisheye.JPG"
 
 
 
