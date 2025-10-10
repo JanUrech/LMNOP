@@ -74,7 +74,7 @@ const menu = document.querySelector(".menuIndex");
 topics.forEach(topic => {
     const urlTitle = topic.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const li = document.createElement("li");
-    li.classList.add("menuItem"); // Klasse hinzufügen
+    li.classList.add("menuIndexItem"); // Klasse hinzufügen
     const a = document.createElement("a");
     a.textContent = topic.title;
     a.href = `#${urlTitle}`; // Link zur Section-ID
