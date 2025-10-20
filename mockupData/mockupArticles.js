@@ -1,7 +1,7 @@
 // Mockup-Daten für die News-Sections
 const topics = [
   {
-    title: "Politik",
+    title: "Männlichkeit",
     description: "Aktuelle Entwicklungen und Hintergründe zur nationalen und internationalen Politik.",
     articles: [
       { title: "Neue Reform beschlossen" },
@@ -12,7 +12,7 @@ const topics = [
     title: "Technologie",
     description: "Die neuesten Trends aus der Welt von KI, Start-ups und digitalen Innovationen.",
     articles: [
-      { title: "Neues Smartphone vorgestellt" },
+      { title: "Neues Smartphone vorgestellt", link: "https://example.com/neues-smartphone", Image: "media/Articles/Smartphone.JPG" },
       { title: "Durchbruch bei Quantencomputern" },
       { title: "Durchbruch bei Quantencomputern2" },
       { title: "Durchbruch bei Quantencomputern3" }
