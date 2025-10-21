@@ -6,10 +6,7 @@
 }
 
 .articleContent {
-    background: #fff;
     padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .articleContent h1 {
@@ -19,10 +16,11 @@
 }
 
 .articleMeta {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-    color: #666;
 }
 
 .articleMeta p {
@@ -33,7 +31,6 @@
     width: 100%;
     height: auto;
     margin-bottom: 2rem;
-    border-radius: 4px;
 }
 
 .articleBody {
