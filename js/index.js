@@ -1,100 +1,120 @@
 // Container holen
 const main = document.querySelector("main");
 
-// Für jedes Topic eine Section bauen
-topics.forEach(topic => {
-  const section = document.createElement("section");
-  section.classList.add("topicSection");
+// Daten von transform.php holen und Sections bauen
+async function loadTopics() {
+  try {
+    const res = await fetch('/PHP/transformIndex.php');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const topics = await res.json();
 
-  // Erzeuge einen URL-freundlichen Titel für ID und Links
-  const urlTitle = topic.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-  section.id = urlTitle; // <--- Section bekommt ID
+    // Für jedes Topic eine Section bauen
+    topics.forEach(topic => {
+      const section = document.createElement("section");
+      section.classList.add("topicSection");
 
-  // Titel
-  const h1 = document.createElement("h1");
-  h1.classList.add("topicTitle");
-  h1.textContent = topic.title;
-  section.appendChild(h1);
+      // Erzeuge einen URL-freundlichen Titel für ID und Links
+      const urlTitle = topic.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      section.id = urlTitle; // <--- Section bekommt ID
 
-  // Hero-Artikel
-  const hero = document.createElement("article");
-  hero.classList.add("heroArticle");
+      // Titel
+      const h1 = document.createElement("h1");
+      h1.classList.add("topicTitle");
+      h1.textContent = topic.title;
+      section.appendChild(h1);
 
-  const overviewUrl = `../overviews/overview-${urlTitle}.html`;
+      // Hero-Artikel
+      const hero = document.createElement("article");
+      hero.classList.add("heroArticle");
 
-  // Hero-Artikel klickbar machen
-  hero.style.cursor = "pointer";
-  hero.addEventListener("click", function(e) {
-    if (e.target.tagName !== "A") {
-      window.location.href = overviewUrl;
-    }
-  });
+      const overviewUrl = `../${urlTitle}.html`;
 
-  // Optional: Link weiterhin anzeigen
-  const overviewLink = document.createElement("a");
-  overviewLink.href = overviewUrl;
-  overviewLink.textContent = "Zur Übersicht";
-  overviewLink.style.display = "none";
-  overviewLink.style.marginBottom = "1rem";
-  hero.appendChild(overviewLink);
+      // Hero-Artikel klickbar machen
+      hero.style.cursor = "pointer";
+      hero.addEventListener("click", function(e) {
+        if (e.target.tagName !== "A") {
+          window.location.href = overviewUrl;
+        }
+      });
 
-  const p = document.createElement("p");
-  p.textContent = topic.description;
-  hero.appendChild(p);
+      // Optional: Link weiterhin anzeigen
+      const overviewLink = document.createElement("a");
+      overviewLink.href = overviewUrl;
+      overviewLink.textContent = "Zur Übersicht";
+      overviewLink.style.display = "none";
+      overviewLink.style.marginBottom = "1rem";
+      hero.appendChild(overviewLink);
 
-  // Nur die ersten zwei Artikel anzeigen
-  topic.articles.slice(0, 2).forEach((article, idx) => {
-    const side = document.createElement("article");
-    side.classList.add("sideArticle");
-    const h2 = document.createElement("h2");
-    h2.classList.add("sideArticleText");
-    h2.textContent = article.title;
-    side.appendChild(h2);
+      const p = document.createElement("p");
+      p.textContent = topic.description;
+      hero.appendChild(p);
 
-    // Zufällige Rotation zwischen -8deg und 8deg (immer, auch mobil)
-    const randRot = (Math.random() * 16 - 8).toFixed(1);
-    side.style.setProperty("--rot", randRot + "deg");
+      // Nur die ersten zwei Artikel anzeigen
+      topic.articles.slice(0, 2).forEach((article, idx) => {
+        const side = document.createElement("article");
+        side.classList.add("sideArticle");
+        const h2 = document.createElement("h2");
+        h2.classList.add("sideArticleText");
+        h2.textContent = article.title;
+        side.appendChild(h2);
 
-    // Für Desktop: Position und vertikale Verschiebung setzen
-    side.style.setProperty("--posX", idx === 0 ? "0%" : "85%");
-    const randY = Math.floor(Math.random() * 121) - 60;
-    side.style.setProperty("--y", randY + "px");
+        // Zufällige Rotation zwischen -8deg und 8deg (immer, auch mobil)
+        const randRot = (Math.random() * 16 - 8).toFixed(1);
+        side.style.setProperty("--rot", randRot + "deg");
 
-    hero.appendChild(side);
-  });
+        // Für Desktop: Position und vertikale Verschiebung setzen
+        side.style.setProperty("--posX", idx === 0 ? "0%" : "85%");
+        const randY = Math.floor(Math.random() * 121) - 60;
+        side.style.setProperty("--y", randY + "px");
 
-  section.appendChild(hero);
-  main.appendChild(section);
-});
+        hero.appendChild(side);
+      });
 
+      section.appendChild(hero);
+      main.appendChild(section);
+    });
+
+    // Menü bauen (nach dem Laden der Topics)
+    buildMenu(topics);
+
+  } catch (err) {
+    console.error('Fehler beim Laden der Topics:', err);
+    main.innerHTML = '<p>Fehler beim Laden der Inhalte.</p>';
+  }
+}
 
 // Menü bauen
-const menu = document.querySelector(".menuIndex");
+function buildMenu(topics) {
+  const menu = document.querySelector(".menuIndex");
+  if (!menu) return;
 
-topics.forEach(topic => {
+  topics.forEach(topic => {
     const urlTitle = topic.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const li = document.createElement("li");
-    li.classList.add("menuIndexItem"); // Klasse hinzufügen
+    li.classList.add("menuIndexItem");
     const a = document.createElement("a");
     a.textContent = topic.title;
-    a.href = `#${urlTitle}`; // Link zur Section-ID
+    a.href = `#${urlTitle}`;
     li.appendChild(a);
     menu.appendChild(li);
-});
+  });
 
-// Smooth Scroll für Menü-Links per Event Delegation
-document.querySelector("menu.menuIndex").addEventListener("click", function(e) {
-  const link = e.target.closest("a");
-  if (!link) return;
+  // Smooth Scroll für Menü-Links per Event Delegation
+  menu.addEventListener("click", function(e) {
+    const link = e.target.closest("a");
+    if (!link) return;
 
-  const href = link.getAttribute("href");
-  // Prüfen, ob Link zu einer Section auf der Seite führt
-  if (href && href.startsWith("#")) {
-    const sectionId = href.slice(1);
-    const section = document.getElementById(sectionId);
-    if (section) {
-      e.preventDefault();
-      section.scrollIntoView({ behavior: "smooth" });
+    const href = link.getAttribute("href");
+    if (href && href.startsWith("#")) {
+      const sectionId = href.slice(1);
+      const section = document.getElementById(sectionId);
+      if (section) {
+        e.preventDefault();
+        section.scrollIntoView({ behavior: "smooth" });
+      }
     }
-  }
-});
+  });
+}
+
+// Initiales Laden der Topics
+loadTopics();

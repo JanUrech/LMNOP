@@ -10,10 +10,10 @@ const topics = [
   },
   {
     title: "Technologie",
-    description: "Die neuesten Trends aus der Welt von KI, Start-ups und digitalen Innovationen.",
+    description: "",
     articles: [
       { title: "Neues Smartphone vorgestellt", link: "https://example.com/neues-smartphone", Image: "media/Articles/Smartphone.JPG" },
-      { title: "Durchbruch bei Quantencomputern" },
+      { title: "Durchbruch bei Quantencomputern", link: "https://example.com/neues-smartphone", Image: "media/Articles/Smartphone.JPG" },
       { title: "Durchbruch bei Quantencomputern2" },
       { title: "Durchbruch bei Quantencomputern3" }
     ]

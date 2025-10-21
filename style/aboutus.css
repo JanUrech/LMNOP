@@ -1,0 +1,121 @@
+/* ================================
+About us
+   ================================ */
+
+#aboutUsMain {
+    padding: 0 10vw;
+    /* mehr Platz unten für SideArticles */
+    flex-grow: 1;
+    /* füllt den verfügbaren Raum zwischen Header und Footer */
+    gap: 4rem;
+}
+
+#teamPhoto {
+    position: relative;
+    width: 80%;
+    /* Passe die Größe nach Bedarf an */
+    margin: 0 auto;
+    height: auto;
+    max-width: 600px;
+}
+
+/* ================================
+  TEAM MEMBERS
+   ================================ */
+.teamMember {
+    position: relative;
+    /* stellt sicher, dass absolute .memberPostit sich darauf bezieht */
+    display: flex;
+    width: 100%;
+    max-width: 300px;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.teamMemberList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 4rem;
+    margin-bottom: 100px;
+}
+
+.memberPostit {
+    position: absolute;
+    top: 70%;
+    left: 0%;
+    width: 45%;
+    /* verlässliche Breitenbasis (anpassbar) */
+    max-width: 180px;
+    /* Obergrenze */
+    box-sizing: border-box;
+    /* Padding/Borders zählen zur Breite */
+    aspect-ratio: 3 / 4;
+    /* gewünschtes Seitenverhältnis */
+    height: auto;
+    /* wichtig: Höhe von aspect-ratio ableiten lassen */
+    background: #F3C4F7;
+    border: none;
+    padding: 1rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.memberName {
+    font-family: "itc-avant-garde-gothic-pro", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.memberRole {
+    font-family: "itc-avant-garde-gothic-pro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.memberPhotos {
+    position: relative;
+    width: 100%;
+    /* Passe die Größe nach Bedarf an */
+    aspect-ratio: 1/1;
+    /* Quadratisches Verhältnis */
+}
+
+.memberPhotoStandard,
+.memberPhotoFisheye {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.8s;
+    pointer-events: none;
+    /* Verhindert, dass das Bild das Hover blockiert */
+}
+
+.memberPhotoFisheye {
+    opacity: 0;
+    z-index: 2;
+}
+
+.memberPhotos:hover .memberPhotoFisheye,
+.memberPhotos.hover .memberPhotoFisheye {
+    opacity: 1;
+}
+
+.memberPhotos:hover .memberPhotoStandard,
+.memberPhotos.hover .memberPhotoStandard {
+    opacity: 0;
+}

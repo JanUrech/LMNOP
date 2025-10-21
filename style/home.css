@@ -1,0 +1,139 @@
+/* ================================
+   SECTION – Thematische Container
+   ================================ */
+.topicSection {
+    position: relative;
+    width: 80vw;
+    max-width: 700px;
+    margin: auto;
+    /* zentriert und vertikale Abstände */
+    margin-bottom: 40vw;
+    height: auto;
+}
+
+/* ================================
+   TITEL – Überschrift eines Abschnitts
+   ================================ */
+.topicTitle {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-family: "cheee-jimbo", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: black;
+}
+
+/* ================================
+   HERO – Zentrale Hauptfläche
+   ================================ */
+.heroArticle {
+    position: relative;
+    /* für absolute Positionierung der sideArticles */
+    width: 100%;
+    aspect-ratio: 7 / 4;
+    padding: 1rem;
+
+    background: #0A4708;
+    color: #fff;
+    text-align: left;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    margin: 0 auto;
+    box-sizing: border-box;
+
+    /* wichtige Voraussetzung für sichtbare sideArticles */
+    overflow: visible;
+}
+
+/* ================================
+   SIDE-ARTICLES – Zusätzliche Inhalte
+   ================================ */
+
+/* Mobile-Version: Articles unter dem Hero zentriert und leicht überlappend */
+.sideArticle {
+    position: absolute;
+    /* relativ zur heroArticle */
+    top: 100%;
+    /* unterhalb des Hero */
+    left: 50%;
+    /* mittig ausrichten */
+    transform: translate(-110%, -20%) rotate(var(--rot, 0deg));
+    /* leicht links verschoben und überlappend (nach oben gezogen) */
+
+    width: 30%;
+    max-width: 180px;
+    aspect-ratio: 2 / 3;
+
+    background: #F3C4F7;
+    border: none;
+    padding: 1rem;
+    margin: 0;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.sideArticleText {
+    font-family: "itc-avant-garde-gothic-pro", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-align: left;
+    left: 0;
+    color: black;
+}
+
+/* Zweites SideArticle bekommt eigene Transformation */
+.sideArticle:nth-of-type(2) {
+    transform: translate(10%, -20%) rotate(var(--rot, 0deg));
+    /* leicht rechts, selbe Überlappung */
+}
+
+/* ================================
+  Menü Index-Seite
+   ================================ */
+.menuIndex {
+    display: none;
+    position: fixed;
+    bottom: 10vh;
+    width: 25%;
+    z-index: 1000;
+    align-items: flex-start;
+    padding: 0;
+    left: 0;
+}
+
+.menuIndexItem {
+    display: flex;
+    width: max-content;
+    padding-right: 1rem;
+    margin-bottom: 0px;
+    color: black;
+    font-weight: 700;
+    font-size: 3rem;
+}
+
+.menuIndexItem:hover {
+    background-color: #F3C4F7;
+
+}
+
+.menuIndexItem a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.menuIndexItem a:visited {
+    color: inherit;
+    text-decoration: none;
+}

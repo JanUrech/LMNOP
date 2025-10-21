@@ -2,7 +2,7 @@
 const headerHTML = `
 <div class="logoBar">
   <img src="media/header/ABCDE.png" alt="" class="logoBarText">
-  <a href="index.html"><img src="media/header/logo_rosa_grau.png" alt="Startseite" id="headerLogo"></a>
+  <a href="index.php"><img src="media/header/logo_rosa_grau.png" alt="Startseite" id="headerLogo"></a>
   <img src="media/header/QRSTU.png" alt="" class="logoBarText">
 </div>
   <menu id="headerMenu">
@@ -35,6 +35,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const footer = document.querySelector("footer");
   if (footer) {
     footer.innerHTML = footerHTML;
+  }
+
+  // Smooth Scroll für Menü-Links
+  const menuIndex = document.querySelector('.menuIndex');
+  if (menuIndex) {
+    menuIndex.addEventListener('click', function(e) {
+      const link = e.target.closest('a');
+      if (!link) return;
+      const href = link.getAttribute('href');
+      if (href?.startsWith('#')) {
+        e.preventDefault();
+        document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
   }
 });
 
