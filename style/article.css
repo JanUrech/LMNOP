@@ -1,0 +1,68 @@
+/* Artikel-Seite Styling */
+.articlePage {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.articleContent {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.articleContent h1 {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
+.articleMeta {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    color: #666;
+}
+
+.articleMeta p {
+    margin: 0.25rem 0;
+}
+
+.articleFeaturedImage {
+    width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.articleBody {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.articleBody p {
+    margin-bottom: 1rem;
+}
+
+.articleBody img {
+    max-width: 100%;
+    height: auto;
+}
+
+.backLink {
+    display: inline-block;
+    margin-top: 2rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+
+/* SideArticle als Link - entfernt default Link-Styles */
+a.sideArticle {
+    display: block;
+}

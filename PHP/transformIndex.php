@@ -1,4 +1,5 @@
 <?php
+// filepath: c:\Users\janic\OneDrive - FH Graubünden\Journalismus Multimedial\08_Formatentwicklung\02Webseite\LMNOP Webseite\LMNOP\PHP\transformIndex.php
 header('Content-Type: application/json; charset=utf-8');
 
 // 1) Posts mit _embed holen
@@ -33,15 +34,17 @@ curl_close($ch2);
 
 $categories = json_decode($catsJson, true) ?: [];
 $catMap = [];
+$catSlugMap = [];
 $overviewCatId = null;
 foreach ($categories as $cat) {
     $catMap[$cat['id']] = $cat['name'];
+    $catSlugMap[$cat['id']] = $cat['slug'];
     if (strtolower($cat['name']) === 'overview') {
         $overviewCatId = $cat['id'];
     }
 }
 
-// 3) Trenne Overview-Posts und normale Posts (strikt)
+// 3) Trenne Overview-Posts und normale Posts
 $overviewPosts = [];
 $normalPosts = [];
 foreach ($posts as $post) {
@@ -53,7 +56,7 @@ foreach ($posts as $post) {
     }
 }
 
-// 4) Gruppiere normale Posts nach Category-ID (ignoriere Overview-Category komplett)
+// 4) Gruppiere normale Posts nach Category-ID
 $grouped = [];
 foreach ($normalPosts as $post) {
     $cats = $post['categories'] ?? [];
@@ -66,7 +69,7 @@ foreach ($normalPosts as $post) {
     }
 }
 
-// 5) Finde für jede Category die neueste Overview-Description
+// 5) Finde neueste Overview-Description pro Category
 $descriptions = [];
 foreach ($overviewPosts as $op) {
     $cats = $op['categories'] ?? [];
@@ -86,13 +89,13 @@ foreach ($overviewPosts as $op) {
     }
 }
 
-// 6) Baue Zielstruktur — filtere Overview-Category komplett raus
+// 6) Baue Zielstruktur
 $result = [];
 foreach ($grouped as $catId => $postsInCat) {
-    // Überspringe Overview selbst als Thema
     if ($catId === $overviewCatId) continue;
     
     $catName = $catMap[$catId] ?? "Unbekannt";
+    $catSlug = $catSlugMap[$catId] ?? strtolower(preg_replace('/[^a-z0-9]+/', '-', $catName));
     $description = $descriptions[$catId]['text'] ?? '';
     
     $articles = [];
@@ -103,6 +106,7 @@ foreach ($grouped as $catId => $postsInCat) {
         }
         $articles[] = [
             'title' => $p['title']['rendered'] ?? '',
+            'slug'  => $p['slug'] ?? '',
             'link'  => $p['link'] ?? '',
             'image' => $imageUrl
         ];
@@ -110,6 +114,7 @@ foreach ($grouped as $catId => $postsInCat) {
     
     $result[] = [
         'title'       => $catName,
+        'slug'        => $catSlug,
         'description' => $description,
         'articles'    => $articles
     ];

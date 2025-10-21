@@ -52,17 +52,17 @@ if ($http >= 200 && $http < 300 && $response !== false) {
   <main>
     <menu class="menuIndex">
       <?php foreach ($topics as $topic): 
-        $urlTitle = strtolower(preg_replace('/[^a-z0-9]+/', '-', $topic['title']));
-        $urlTitle = trim($urlTitle, '-');
+        // Nutze WordPress Category-Slug, fallback auf generierter Slug
+        $urlTitle = $topic['slug'] ?? strtolower(preg_replace('/[^a-z0-9]+/', '-', trim($topic['title'], '-')));
       ?>
         <li class="menuIndexItem"><a href="#<?= htmlspecialchars($urlTitle) ?>"><?= htmlspecialchars($topic['title']) ?></a></li>
       <?php endforeach; ?>
     </menu>
 
     <?php foreach ($topics as $topic): 
-      $urlTitle = strtolower(preg_replace('/[^a-z0-9]+/', '-', $topic['title']));
-      $urlTitle = trim($urlTitle, '-');
-      $overviewUrl = "{$urlTitle}.html";
+      // Nutze WordPress Category-Slug
+      $urlTitle = $topic['slug'] ?? strtolower(preg_replace('/[^a-z0-9]+/', '-', trim($topic['title'], '-')));
+      $overviewUrl = "uebersicht.php?slug=" . urlencode($urlTitle);
     ?>
       <section class="topicSection" id="<?= htmlspecialchars($urlTitle) ?>">
         <h1 class="topicTitle"><?= htmlspecialchars($topic['title']) ?></h1>
@@ -73,13 +73,17 @@ if ($http >= 200 && $http < 300 && $response !== false) {
           <?php 
           $sideArticles = array_slice($topic['articles'] ?? [], 0, 2);
           foreach ($sideArticles as $idx => $article): 
+            // Nutze WordPress Post-Slug direkt
+            $articleSlug = $article['slug'] ?? basename(trim(parse_url($article['link'], PHP_URL_PATH), '/'));
+            $articleUrl = "artikel.php?slug=" . urlencode($articleSlug);
+            
             $randRot = number_format((mt_rand(-80, 80) / 10), 1);
             $posX = ($idx === 0) ? '0%' : '85%';
             $randY = mt_rand(-60, 60);
           ?>
-            <article class="sideArticle" style="--rot:<?= $randRot ?>deg; --posX:<?= $posX ?>; --y:<?= $randY ?>px;">
+            <a href="<?= htmlspecialchars($articleUrl) ?>" class="sideArticle" style="--rot:<?= $randRot ?>deg; --posX:<?= $posX ?>; --y:<?= $randY ?>px; text-decoration:none; color:inherit;">
               <h2 class="sideArticleText"><?= htmlspecialchars($article['title']) ?></h2>
-            </article>
+            </a>
           <?php endforeach; ?>
         </article>
       </section>

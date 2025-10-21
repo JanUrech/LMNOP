@@ -1,0 +1,93 @@
+/* Übersichts-Seite Styling */
+.overviewPage {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.overviewContent {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.overviewContent h1 {
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
+.overviewContent h2 {
+    margin: 3rem 0 1.5rem;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #F3C4F7;
+    padding-bottom: 0.5rem;
+}
+
+.overviewFeaturedImage {
+    width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.overviewBody {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.articleList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.articlePreview {
+    background: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.articlePreview:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.previewImage {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.previewContent {
+    padding: 1.5rem;
+}
+
+.previewContent h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
+}
+
+.previewContent h3 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.previewContent h3 a:hover {
+    color: #F3C4F7;
+}
+
+.previewDate {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.previewContent p {
+    margin: 0;
+    line-height: 1.6;
+}
