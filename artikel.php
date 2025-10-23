@@ -4,8 +4,8 @@
 // Hole Slug aus URL
 $slug = $_GET['slug'] ?? '';
 if (empty($slug)) {
-    header('Location: index.php');
-    exit;
+  header('Location: index.php');
+  exit;
 }
 
 // Hole Post-Daten von WP API
@@ -19,16 +19,16 @@ curl_close($ch);
 
 $post = null;
 if ($http >= 200 && $http < 300 && $response) {
-    $posts = json_decode($response, true);
-    if (!empty($posts) && is_array($posts)) {
-        $post = $posts[0];
-    }
+  $posts = json_decode($response, true);
+  if (!empty($posts) && is_array($posts)) {
+    $post = $posts[0];
+  }
 }
 
 if (!$post) {
-    header('HTTP/1.0 404 Not Found');
-    echo '<h1>Artikel nicht gefunden</h1>';
-    exit;
+  header('HTTP/1.0 404 Not Found');
+  echo '<h1>Artikel nicht gefunden</h1>';
+  exit;
 }
 
 // Daten extrahieren
@@ -36,22 +36,63 @@ $title = $post['title']['rendered'] ?? 'Kein Titel';
 $content = $post['content']['rendered'] ?? '';
 $excerpt = $post['excerpt']['rendered'] ?? '';
 $date = date('d.m.Y', strtotime($post['date'] ?? 'now'));
-$authorId = $post['author'] ?? 0;
 $featuredImage = $post['_embedded']['wp:featuredmedia'][0]['source_url'] ?? '';
 
-// Hole Autor-Daten
-$authorName = 'Unbekannt';
-if ($authorId > 0) {
-    $authorUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/users/' . $authorId;
-    $chAuthor = curl_init($authorUrl);
-    curl_setopt($chAuthor, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($chAuthor, CURLOPT_TIMEOUT, 5);
-    $authorResponse = curl_exec($chAuthor);
-    curl_close($chAuthor);
-    $author = json_decode($authorResponse, true);
-    if ($author && isset($author['name'])) {
-        $authorName = $author['name'];
+// Trenne ersten Paragraphen vom Rest
+$firstParagraph = '';
+$remainingContent = $content;
+
+// Finde ersten <p>-Tag
+if (preg_match('/<p[^>]*>(.*?)<\/p>/is', $content, $matches, PREG_OFFSET_CAPTURE)) {
+  $firstParagraph = $matches[0][0]; // Kompletter <p>-Tag mit Inhalt
+  $position = $matches[0][1]; // Position im String
+  $length = strlen($matches[0][0]);
+  
+  // Entferne ersten Paragraphen aus dem restlichen Content
+  $remainingContent = substr($content, 0, $position) . substr($content, $position + $length);
+}
+
+// Hole Tag-Namen (bereits in _embed enthalten)
+$tags = [];
+if (!empty($post['_embedded']['wp:term'])) {
+  foreach ($post['_embedded']['wp:term'] as $termGroup) {
+    foreach ($termGroup as $term) {
+      if (isset($term['taxonomy']) && $term['taxonomy'] === 'post_tag') {
+        $tags[] = strtolower(trim($term['name']));
+      }
     }
+  }
+}
+
+// Lade authorsList.json
+$authorsJson = file_get_contents(__DIR__ . '/Data/authorsList.json');
+$allAuthors = json_decode($authorsJson, true) ?: [];
+
+// Finde Autoren, deren Namen in den Tags vorkommen (mit Foto)
+$articleAuthors = [];
+foreach ($allAuthors as $author) {
+  $authorName = strtolower(trim($author['Name']));
+  if (in_array($authorName, $tags)) {
+    $articleAuthors[] = [
+      'name' => $author['Name'],
+      'photo' => $author['fotoStandard'] ?? ''
+    ];
+  }
+}
+
+// Generiere HTML für Autoren-Liste
+$authorsHTML = '';
+if (!empty($articleAuthors)) {
+  foreach ($articleAuthors as $author) {
+    $authorsHTML .= '<div class="authorItem">';
+    if (!empty($author['photo'])) {
+      $authorsHTML .= '<img src="' . htmlspecialchars($author['photo']) . '" alt="' . htmlspecialchars($author['name']) . '" class="authorPhoto">';
+    }
+    $authorsHTML .= '<span class="authorName">' . htmlspecialchars($author['name']) . '</span>';
+    $authorsHTML .= '</div>';
+  }
+} else {
+  $authorsHTML = '<span>Unbekannt</span>';
 }
 ?>
 <!DOCTYPE html>
@@ -73,18 +114,29 @@ if ($authorId > 0) {
   <main class="articlePage">
     <article class="articleContent">
       <h1><?= htmlspecialchars($title) ?></h1>
-      
+
       <div class="articleMeta">
-        <p><strong>Autor:</strong> <?= htmlspecialchars($authorName) ?></p>
-        <p><strong>Datum:</strong> <?= htmlspecialchars($date) ?></p>
+        <div class="authorSection">
+          <div class="authorList">
+            <?= $authorsHTML ?>
+          </div>
+        </div>
+        <p id="articleDate"> <?= htmlspecialchars($date) ?></p>
       </div>
 
+      <?php if ($firstParagraph): ?>
+        <div class="articleLead">
+          <?= $firstParagraph ?>
+        </div>
+      <?php endif; ?>
+
       <?php if ($featuredImage): ?>
-        <img src="<?= htmlspecialchars($featuredImage) ?>" alt="<?= htmlspecialchars($title) ?>" class="articleFeaturedImage">
+        <img src="<?= htmlspecialchars($featuredImage) ?>" alt="<?= htmlspecialchars($title) ?>"
+          class="articleFeaturedImage">
       <?php endif; ?>
 
       <div class="articleBody">
-        <?= $content ?>
+        <?= $remainingContent ?>
       </div>
 
       <a href="index.php" class="backLink">← Zurück zur Startseite</a>

@@ -1,8 +1,9 @@
 /* Artikel-Seite Styling */
 .articlePage {
-    max-width: 800px;
-    margin: 2rem auto;
+    max-width: 1000px;
+    margin: auto;
     padding: 0 1rem;
+    width: 90%;
 }
 
 .articleContent {
@@ -17,7 +18,7 @@
 
 .articleMeta {
     display: flex;
-    flex-direction: row;
+    flex-direction: column-reverse;
     justify-content: space-between;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
@@ -62,4 +63,50 @@
 /* SideArticle als Link - entfernt default Link-Styles */
 a.sideArticle {
     display: block;
+}
+
+/* Autoren-Sektion */
+.authorSection {
+    margin-bottom: 1rem;
+}
+
+.authorList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.authorItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.authorPhoto {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.authorName {
+    font-weight: 500;
+}
+
+#articleDate {
+    font-size: 0.9rem;
+    align-items: center;
+    display: flex;
+}
+
+
+@media (min-width: 900px) {
+
+    .articleMeta {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+
 }

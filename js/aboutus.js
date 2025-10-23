@@ -1,72 +1,82 @@
 const teamMemberList = document.querySelector('.teamMemberList');
-teamMemberList.innerHTML = ""; // Vorherigen Inhalt entfernen
 
-teammembers.forEach(member => {
-    // Section für das Teammitglied
-    const section = document.createElement('section');
-    section.classList.add('teamMember');
+// Lade Autoren-Daten aus JSON
+fetch('Data/authorsList.json')
+  .then(response => response.json())
+  .then(teammembers => {
+    teamMemberList.innerHTML = ""; // Vorherigen Inhalt entfernen
 
-    // Container für die Fotos
-    const photoDiv = document.createElement('div');
-    photoDiv.classList.add('memberPhotos');
+    teammembers.forEach(member => {
+        // Section für das Teammitglied
+        const section = document.createElement('section');
+        section.classList.add('teamMember');
 
-    // Standardfoto
-    const imgStandard = document.createElement('img');
-    imgStandard.src = member.fotoStandard;
-    imgStandard.alt = `Foto von ${member.Name}`;
-    imgStandard.classList.add('memberPhotoStandard');
+        // Container für die Fotos
+        const photoDiv = document.createElement('div');
+        photoDiv.classList.add('memberPhotos');
 
-    // Hoverfoto
-    const imgHover = document.createElement('img');
-    imgHover.src = member.fotoHover;
-    imgHover.alt = `Fisheye Foto von ${member.Name}`;
-    imgHover.classList.add('memberPhotoFisheye');
+        // Standardfoto
+        const imgStandard = document.createElement('img');
+        imgStandard.src = member.fotoStandard;
+        imgStandard.alt = `Foto von ${member.Name}`;
+        imgStandard.classList.add('memberPhotoStandard');
 
-    // Post-it mit Name und Rolle
-    const postitDiv = document.createElement('div');
-    postitDiv.classList.add('memberPostit');
+        // Hoverfoto
+        const imgHover = document.createElement('img');
+        imgHover.src = member.fotoHover;
+        imgHover.alt = `Fisheye Foto von ${member.Name}`;
+        imgHover.classList.add('memberPhotoFisheye');
 
-// Zufällige Rotation zwischen -8deg und +8deg
-const randRot = (Math.random() * 16 - 8).toFixed(1);
-// Zufällige horizontale Verschiebung zwischen -50% und +50%
-const randX = (Math.random() * 150 - 50).toFixed(1);
-postitDiv.style.transform = `rotate(${randRot}deg) translateX(${randX}%)`;
+        // Post-it mit Name und Rolle
+        const postitDiv = document.createElement('div');
+        postitDiv.classList.add('memberPostit');
 
-    const h2 = document.createElement('h2');
-    h2.classList.add('memberName');
-    h2.textContent = member.Name;
+        // Zufällige Rotation zwischen -8deg und +8deg
+        const randRot = (Math.random() * 16 - 8).toFixed(1);
+        // Zufällige horizontale Verschiebung zwischen -50% und +50%
+        const randX = (Math.random() * 150 - 50).toFixed(1);
+        postitDiv.style.transform = `rotate(${randRot}deg) translateX(${randX}%)`;
 
-    const p = document.createElement('p');
-    p.classList.add('memberRole');
-    p.textContent = `Rolle: ${member.role}`;
+        const h2 = document.createElement('h2');
+        h2.classList.add('memberName');
+        h2.textContent = member.Name;
 
-    // Zusammenbauen
-    postitDiv.appendChild(h2);
-    postitDiv.appendChild(p);
+        const p = document.createElement('p');
+        p.classList.add('memberRole');
+        p.textContent = `Rolle: ${member.role}`;
 
-    photoDiv.appendChild(imgStandard);
-    photoDiv.appendChild(imgHover);
-    photoDiv.appendChild(postitDiv);
+        // Zusammenbauen
+        postitDiv.appendChild(h2);
+        postitDiv.appendChild(p);
 
-    section.appendChild(photoDiv);
-    teamMemberList.appendChild(section);
+        photoDiv.appendChild(imgStandard);
+        photoDiv.appendChild(imgHover);
+        photoDiv.appendChild(postitDiv);
 
-    // Touch: Toggle hover on tap, close other toggles
-    photoDiv.addEventListener('touchstart', function (e) {
-        e.preventDefault(); // verhindert direktes Scrollen beim Tippen
-        // entferne 'hover' von allen anderen
-        document.querySelectorAll('.memberPhotos.hover').forEach(el => {
-            if (el !== photoDiv) el.classList.remove('hover');
-        });
-        // toggle für das aktuelle
-        photoDiv.classList.toggle('hover');
-    }, { passive: false });
-});
+        section.appendChild(photoDiv);
+        teamMemberList.appendChild(section);
 
-// global: Tippen außerhalb schliesst offene Hovers
-document.addEventListener('touchstart', function (e) {
-    if (!e.target.closest('.memberPhotos')) {
-        document.querySelectorAll('.memberPhotos.hover').forEach(el => el.classList.remove('hover'));
-    }
-}, { passive: true });
+        // Touch: Toggle hover on tap, close other toggles
+        photoDiv.addEventListener('touchstart', function (e) {
+            e.preventDefault(); // verhindert direktes Scrollen beim Tippen
+            // entferne 'hover' von allen anderen
+            document.querySelectorAll('.memberPhotos.hover').forEach(el => {
+                if (el !== photoDiv) el.classList.remove('hover');
+            });
+            // toggle für das aktuelle
+            photoDiv.classList.toggle('hover');
+        }, { passive: false });
+    });
+
+    // global: Tippen außerhalb schliesst offene Hovers
+    document.addEventListener('touchstart', function (e) {
+        if (!e.target.closest('.memberPhotos')) {
+            document.querySelectorAll('.memberPhotos.hover').forEach(el => el.classList.remove('hover'));
+        }
+    }, { passive: true });
+  })
+  .catch(error => {
+    console.error('Fehler beim Laden der Autoren-Daten:', error);
+    teamMemberList.innerHTML = '<p>Fehler beim Laden der Team-Mitglieder.</p>';
+  });
 
