@@ -1,17 +1,10 @@
 [
   {
-    "Name": "David Widmer",
-    "role": "Lektorat",
-    "themengebiet": "Gesundheitssystem",
-    "fotoStandard": "media/TeamMitglieder/DavidStandard.JPG",
-    "fotoHover": "media/TeamMitglieder/DavidFisheye.JPG"
-  },
-  {
-    "Name": "Janic Urech",
+    "Name": "Aaron Täschler",
     "role": "Webpage",
     "themengebiet": "Männlichkeit",
-    "fotoStandard": "media/TeamMitglieder/JanicStandard.JPG",
-    "fotoHover": "media/TeamMitglieder/JanicFisheye.JPG"
+    "fotoStandard": "media/TeamMitglieder/AaronStandard.JPG",
+    "fotoHover": "media/TeamMitglieder/AaronFisheye.JPG"
   },
   {
     "Name": "Annamaria Hohl",
@@ -21,11 +14,46 @@
     "fotoHover": "media/TeamMitglieder/MarieFisheye.JPG"
   },
   {
+    "Name": "Cecilia Comisso",
+    "role": "Webpage",
+    "themengebiet": "Männlichkeit",
+    "fotoStandard": "media/TeamMitglieder/CeciliaStandard.JPG",
+    "fotoHover": "media/TeamMitglieder/CeciliaFisheye.JPG"
+  },
+  {
+    "Name": "David Widmer",
+    "role": "Lektorat",
+    "themengebiet": "Gesundheitssystem",
+    "fotoStandard": "media/TeamMitglieder/DavidStandard.JPG",
+    "fotoHover": "media/TeamMitglieder/DavidFisheye.JPG"
+  },
+  {
+    "Name": "Giacumin Cattelan",
+    "role": "Webpage",
+    "themengebiet": "Männlichkeit",
+    "fotoStandard": "media/TeamMitglieder/GiacuminStandard.JPG",
+    "fotoHover": "media/TeamMitglieder/GiacuminFisheye.JPG"
+  },
+  {
+    "Name": "Janic Urech",
+    "role": "Webpage",
+    "themengebiet": "Männlichkeit",
+    "fotoStandard": "media/TeamMitglieder/JanicStandard.JPG",
+    "fotoHover": "media/TeamMitglieder/JanicFisheye.JPG"
+  },
+  {
     "Name": "Moritz Kappeler",
     "role": "Legal",
     "themengebiet": "Musik Szene",
     "fotoStandard": "media/TeamMitglieder/MoritzStandard.JPG",
     "fotoHover": "media/TeamMitglieder/MoritzFisheye.JPG"
+  },
+  {
+    "Name": "Muriel Lüthi",
+    "role": "Webpage",
+    "themengebiet": "Männlichkeit",
+    "fotoStandard": "media/TeamMitglieder/MurielStandard.JPG",
+    "fotoHover": "media/TeamMitglieder/MurielFisheye.JPG"
   },
   {
     "Name": "Norina Bieler",
@@ -42,40 +70,10 @@
     "fotoHover": "media/TeamMitglieder/PascalFisheye.JPG"
   },
   {
-    "Name": "Giacumin Cattelan",
-    "role": "Webpage",
-    "themengebiet": "Männlichkeit",
-    "fotoStandard": "media/TeamMitglieder/GiacuminStandard.JPG",
-    "fotoHover": "media/TeamMitglieder/GiacuminFisheye.JPG"
-  },
-
-    {
-    "Name": "Cecilia Comisso",
-    "role": "Webpage",
-    "themengebiet": "Männlichkeit",
-    "fotoStandard": "media/TeamMitglieder/CeciliaStandard.JPG",
-    "fotoHover": "media/TeamMitglieder/CeciliaFisheye.JPG"
-  },  
-  {
     "Name": "Tobias Kunz",
     "role": "Webpage",
     "themengebiet": "Männlichkeit",
     "fotoStandard": "media/TeamMitglieder/TobiasStandard.JPG",
     "fotoHover": "media/TeamMitglieder/TobiasFisheye.JPG"
-  },
-    {
-    "Name": "Aaron Täschler",
-    "role": "Webpage",
-    "themengebiet": "Männlichkeit",
-    "fotoStandard": "media/TeamMitglieder/AaronStandard.JPG",
-    "fotoHover": "media/TeamMitglieder/AaronFisheye.JPG"
-  },
-
-      {
-    "Name": "Muriel Lüthi",
-    "role": "Webpage",
-    "themengebiet": "Männlichkeit",
-    "fotoStandard": "media/TeamMitglieder/MurielStandard.JPG",
-    "fotoHover": "media/TeamMitglieder/MurielFisheye.JPG"
   }
 ]

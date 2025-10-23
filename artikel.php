@@ -125,8 +125,8 @@ if (!empty($articleAuthors)) {
       </div>
 
       <?php if ($firstParagraph): ?>
-        <div class="articleLead">
-          <?= $firstParagraph ?>
+        <div class="articleLead"> 
+           <?= $firstParagraph ?>
         </div>
       <?php endif; ?>
 
