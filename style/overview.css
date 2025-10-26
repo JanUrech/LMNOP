@@ -1,19 +1,17 @@
 /* Übersichts-Seite Styling */
 .overviewPage {
-    max-width: 1200px;
-    margin: 2rem auto;
+    max-width: 1000px;
+    margin: auto;
     padding: 0 1rem;
+    width: 90%;
 }
 
 .overviewContent {
-    background: #fff;
     padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .overviewContent h1 {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-size: 2.5rem;
     line-height: 1.2;
 }
@@ -21,7 +19,6 @@
 .overviewContent h2 {
     margin: 3rem 0 1.5rem;
     font-size: 1.8rem;
-    border-bottom: 2px solid #F3C4F7;
     padding-bottom: 0.5rem;
 }
 
@@ -29,7 +26,6 @@
     width: 100%;
     height: auto;
     margin-bottom: 2rem;
-    border-radius: 4px;
 }
 
 .overviewBody {
@@ -38,6 +34,23 @@
     margin-bottom: 3rem;
 }
 
+.overviewBody p {
+    margin-bottom: 1rem;
+}
+
+.overviewBody img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Lead-Paragraph für Overview */
+.overviewLead p {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+/* Artikel-Liste */
 .articleList {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -90,4 +103,16 @@
 .previewContent p {
     margin: 0;
     line-height: 1.6;
+}
+
+.backLink {
+    display: inline-block;
+    margin-top: 2rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.backLink:hover {
+    text-decoration: underline;
 }
