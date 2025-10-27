@@ -1,5 +1,5 @@
 <?php
-// filepath: c:\Users\janic\OneDrive - FH Graubünden\Journalismus Multimedial\08_Formatentwicklung\02Webseite\LMNOP Webseite\LMNOP\übersicht.php
+// filepath: c:\Users\janic\OneDrive - FH Graubünden\Journalismus Multimedial\08_Formatentwicklung\02Webseite\LMNOP Webseite\LMNOP\uebersicht.php
 
 // Hole Category-Slug aus URL
 $categorySlug = $_GET['slug'] ?? '';
@@ -80,6 +80,61 @@ $categoryName = $category['name'] ?? 'Übersicht';
 $overviewTitle = $overviewPost['title']['rendered'] ?? $categoryName;
 $overviewContent = $overviewPost['content']['rendered'] ?? '';
 $overviewImage = $overviewPost['_embedded']['wp:featuredmedia'][0]['source_url'] ?? '';
+$overviewDate = date('d.m.Y', strtotime($overviewPost['date'] ?? 'now'));
+
+// Trenne ersten Paragraphen vom Rest (für Overview)
+$firstParagraph = '';
+$remainingContent = $overviewContent;
+
+if (preg_match('/<p[^>]*>(.*?)<\/p>/is', $overviewContent, $matches, PREG_OFFSET_CAPTURE)) {
+    $firstParagraph = $matches[0][0];
+    $position = $matches[0][1];
+    $length = strlen($matches[0][0]);
+    $remainingContent = substr($overviewContent, 0, $position) . substr($overviewContent, $position + $length);
+}
+
+// Hole Tag-Namen vom Overview-Post
+$tags = [];
+if (!empty($overviewPost['_embedded']['wp:term'])) {
+    foreach ($overviewPost['_embedded']['wp:term'] as $termGroup) {
+        foreach ($termGroup as $term) {
+            if (isset($term['taxonomy']) && $term['taxonomy'] === 'post_tag') {
+                $tags[] = strtolower(trim($term['name']));
+            }
+        }
+    }
+}
+
+// Lade authorsList.json
+$authorsJson = file_get_contents(__DIR__ . '/Data/authorsList.json');
+$allAuthors = json_decode($authorsJson, true) ?: [];
+
+// Finde Autoren, deren Namen in den Tags vorkommen (mit Foto)
+$articleAuthors = [];
+foreach ($allAuthors as $author) {
+    $authorName = strtolower(trim($author['Name']));
+    if (in_array($authorName, $tags)) {
+        $articleAuthors[] = [
+            'name' => $author['Name'],
+            'photo' => $author['fotoStandard'] ?? ''
+        ];
+    }
+}
+
+// Generiere HTML für Autoren-Liste
+$authorsHTML = '';
+if (!empty($articleAuthors)) {
+    foreach ($articleAuthors as $author) {
+        $authorsHTML .= '<div class="authorItem">';
+        if (!empty($author['photo'])) {
+            $authorsHTML .= '<img src="' . htmlspecialchars($author['photo']) . '" alt="' . htmlspecialchars($author['name']) . '" class="authorPhoto">';
+        }
+        $authorsHTML .= '<span class="authorName">' . htmlspecialchars($author['name']) . '</span>';
+        $authorsHTML .= '</div>';
+    }
+} else {
+    $authorsHTML = '<span>Unbekannt</span>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -101,19 +156,33 @@ $overviewImage = $overviewPost['_embedded']['wp:featuredmedia'][0]['source_url']
     <article class="overviewContent">
       <h1><?= htmlspecialchars($overviewTitle) ?></h1>
 
+      <div class="articleMeta">
+        <div class="authorSection">
+          <div class="authorList">
+            <?= $authorsHTML ?>
+          </div>
+        </div>
+      </div>
+
+      <?php if ($firstParagraph): ?>
+        <div class="overviewLead">
+          <?= $firstParagraph ?>
+        </div>
+      <?php endif; ?>
+
       <?php if ($overviewImage): ?>
         <img src="<?= htmlspecialchars($overviewImage) ?>" alt="<?= htmlspecialchars($overviewTitle) ?>" class="overviewFeaturedImage">
       <?php endif; ?>
 
       <div class="overviewBody">
-        <?= $overviewContent ?>
+        <?= $remainingContent ?>
       </div>
 
       <h2>Alle Artikel zu <?= htmlspecialchars($categoryName) ?></h2>
       
       <div class="articleList">
         <?php foreach ($normalPosts as $post): 
-          $postSlug = basename(trim(parse_url($post['link'], PHP_URL_PATH), '/'));
+          $postSlug = $post['slug'] ?? basename(trim(parse_url($post['link'], PHP_URL_PATH), '/'));
           $postTitle = $post['title']['rendered'] ?? 'Kein Titel';
           $postExcerpt = strip_tags($post['excerpt']['rendered'] ?? '');
           $postImage = $post['_embedded']['wp:featuredmedia'][0]['source_url'] ?? '';

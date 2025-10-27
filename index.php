@@ -65,7 +65,7 @@ if ($http >= 200 && $http < 300 && $response !== false) {
       $overviewUrl = "uebersicht.php?slug=" . urlencode($urlTitle);
     ?>
       <section class="topicSection" id="<?= htmlspecialchars($urlTitle) ?>">
-        <h1 class="topicTitle"><?= htmlspecialchars($topic['title']) ?></h1>
+        <h2 class="topicTitle"><?= htmlspecialchars($topic['title']) ?></h2>
         
         <article class="heroArticle" onclick="window.location.href='<?= htmlspecialchars($overviewUrl) ?>'" style="cursor:pointer;">
           <p><?= htmlspecialchars($topic['description'] ?? '') ?></p>
