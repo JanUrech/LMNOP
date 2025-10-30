@@ -52,45 +52,47 @@
 
 /* Artikel-Liste */
 .articleList {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
-    margin-bottom: 2rem;
 }
 
 .articlePreview {
-    background: #f9f9f9;
-    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
     overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
 }
 
-.articlePreview:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+/* Jeder zweite Artikel: Text zuerst, dann Bild */
+.articlePreview:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.articlePreview:nth-child(even) .previewContent{
+padding-left: 0;
 }
 
 .previewImage {
-    width: 100%;
-    height: 200px;
+    width: 33%;
+    height: auto;
     object-fit: cover;
+    aspect-ratio: 1/1;
 }
 
 .previewContent {
+    width: 67%;
     padding: 1.5rem;
 }
 
 .previewContent h3 {
     margin: 0 0 0.5rem;
     font-size: 1.3rem;
-}
-
-.previewContent h3 a {
     color: #333;
-    text-decoration: none;
 }
 
-.previewContent h3 a:hover {
+.articlePreview:hover .previewContent h3 {
     color: #F3C4F7;
 }
 
@@ -103,6 +105,7 @@
 .previewContent p {
     margin: 0;
     line-height: 1.6;
+    color: #333;
 }
 
 .backLink {

@@ -86,9 +86,12 @@ header {
     align-content: center;
 }
 
-.logoBarText p{
+.logoBarText p {
     font-size: 3.5vw;
     font-family: "cheee-jimbo", sans-serif;
+    margin: 0;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #headerLogo {

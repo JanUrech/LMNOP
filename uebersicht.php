@@ -4,8 +4,8 @@
 // Hole Category-Slug aus URL
 $categorySlug = $_GET['slug'] ?? '';
 if (empty($categorySlug)) {
-    header('Location: index.php');
-    exit;
+  header('Location: index.php');
+  exit;
 }
 
 // Hole Category ID
@@ -19,17 +19,17 @@ curl_close($ch);
 $category = null;
 $categoryId = null;
 if ($catResponse) {
-    $cats = json_decode($catResponse, true);
-    if (!empty($cats) && is_array($cats)) {
-        $category = $cats[0];
-        $categoryId = $category['id'];
-    }
+  $cats = json_decode($catResponse, true);
+  if (!empty($cats) && is_array($cats)) {
+    $category = $cats[0];
+    $categoryId = $category['id'];
+  }
 }
 
 if (!$category) {
-    header('HTTP/1.0 404 Not Found');
-    echo '<h1>Thema nicht gefunden</h1>';
-    exit;
+  header('HTTP/1.0 404 Not Found');
+  echo '<h1>Thema nicht gefunden</h1>';
+  exit;
 }
 
 // Hole alle Posts dieser Category
@@ -42,7 +42,7 @@ curl_close($ch2);
 
 $posts = [];
 if ($postsResponse) {
-    $posts = json_decode($postsResponse, true) ?: [];
+  $posts = json_decode($postsResponse, true) ?: [];
 }
 
 // Hole Overview-Category ID
@@ -55,25 +55,25 @@ curl_close($chOv);
 
 $overviewCatId = null;
 if ($ovResponse) {
-    $ovCats = json_decode($ovResponse, true);
-    if (!empty($ovCats) && is_array($ovCats)) {
-        $overviewCatId = $ovCats[0]['id'];
-    }
+  $ovCats = json_decode($ovResponse, true);
+  if (!empty($ovCats) && is_array($ovCats)) {
+    $overviewCatId = $ovCats[0]['id'];
+  }
 }
 
 // Trenne Overview-Post und normale Posts
 $overviewPost = null;
 $normalPosts = [];
 foreach ($posts as $post) {
-    $postCats = $post['categories'] ?? [];
-    if ($overviewCatId && in_array($overviewCatId, $postCats, true)) {
-        // Nimm neuesten Overview-Post
-        if (!$overviewPost || strtotime($post['date']) > strtotime($overviewPost['date'])) {
-            $overviewPost = $post;
-        }
-    } else {
-        $normalPosts[] = $post;
+  $postCats = $post['categories'] ?? [];
+  if ($overviewCatId && in_array($overviewCatId, $postCats, true)) {
+    // Nimm neuesten Overview-Post
+    if (!$overviewPost || strtotime($post['date']) > strtotime($overviewPost['date'])) {
+      $overviewPost = $post;
     }
+  } else {
+    $normalPosts[] = $post;
+  }
 }
 
 $categoryName = $category['name'] ?? 'Übersicht';
@@ -87,22 +87,22 @@ $firstParagraph = '';
 $remainingContent = $overviewContent;
 
 if (preg_match('/<p[^>]*>(.*?)<\/p>/is', $overviewContent, $matches, PREG_OFFSET_CAPTURE)) {
-    $firstParagraph = $matches[0][0];
-    $position = $matches[0][1];
-    $length = strlen($matches[0][0]);
-    $remainingContent = substr($overviewContent, 0, $position) . substr($overviewContent, $position + $length);
+  $firstParagraph = $matches[0][0];
+  $position = $matches[0][1];
+  $length = strlen($matches[0][0]);
+  $remainingContent = substr($overviewContent, 0, $position) . substr($overviewContent, $position + $length);
 }
 
 // Hole Tag-Namen vom Overview-Post
 $tags = [];
 if (!empty($overviewPost['_embedded']['wp:term'])) {
-    foreach ($overviewPost['_embedded']['wp:term'] as $termGroup) {
-        foreach ($termGroup as $term) {
-            if (isset($term['taxonomy']) && $term['taxonomy'] === 'post_tag') {
-                $tags[] = strtolower(trim($term['name']));
-            }
-        }
+  foreach ($overviewPost['_embedded']['wp:term'] as $termGroup) {
+    foreach ($termGroup as $term) {
+      if (isset($term['taxonomy']) && $term['taxonomy'] === 'post_tag') {
+        $tags[] = strtolower(trim($term['name']));
+      }
     }
+  }
 }
 
 // Lade authorsList.json
@@ -112,28 +112,36 @@ $allAuthors = json_decode($authorsJson, true) ?: [];
 // Finde Autoren, deren Namen in den Tags vorkommen (mit Foto)
 $articleAuthors = [];
 foreach ($allAuthors as $author) {
-    $authorName = strtolower(trim($author['Name']));
-    if (in_array($authorName, $tags)) {
-        $articleAuthors[] = [
-            'name' => $author['Name'],
-            'photo' => $author['fotoStandard'] ?? ''
-        ];
-    }
+  $authorName = strtolower(trim($author['Name']));
+  if (in_array($authorName, $tags)) {
+    $articleAuthors[] = [
+      'name' => $author['Name'],
+      'photo' => $author['fotoStandard'] ?? ''
+    ];
+  }
 }
 
 // Generiere HTML für Autoren-Liste
 $authorsHTML = '';
 if (!empty($articleAuthors)) {
-    foreach ($articleAuthors as $author) {
-        $authorsHTML .= '<div class="authorItem">';
-        if (!empty($author['photo'])) {
-            $authorsHTML .= '<img src="' . htmlspecialchars($author['photo']) . '" alt="' . htmlspecialchars($author['name']) . '" class="authorPhoto">';
-        }
-        $authorsHTML .= '<span class="authorName">' . htmlspecialchars($author['name']) . '</span>';
-        $authorsHTML .= '</div>';
+  foreach ($articleAuthors as $author) {
+    $authorsHTML .= '<div class="authorItem">';
+    if (!empty($author['photo'])) {
+      $authorsHTML .= '<img src="' . htmlspecialchars($author['photo']) . '" alt="' . htmlspecialchars($author['name']) . '" class="authorPhoto">';
     }
+    $authorsHTML .= '<span class="authorName">' . htmlspecialchars($author['name']) . '</span>';
+    $authorsHTML .= '</div>';
+  }
 } else {
-    $authorsHTML = '<span>Unbekannt</span>';
+  $authorsHTML = '<span>Unbekannt</span>';
+}
+
+// Hilfsfunktion: Extrahiere ersten Paragraphen aus Content
+function getFirstParagraph($content) {
+  if (preg_match('/<p[^>]*>(.*?)<\/p>/is', $content, $matches)) {
+    return strip_tags($matches[1]);
+  }
+  return strip_tags($content);
 }
 ?>
 <!DOCTYPE html>
@@ -171,7 +179,8 @@ if (!empty($articleAuthors)) {
       <?php endif; ?>
 
       <?php if ($overviewImage): ?>
-        <img src="<?= htmlspecialchars($overviewImage) ?>" alt="<?= htmlspecialchars($overviewTitle) ?>" class="overviewFeaturedImage">
+        <img src="<?= htmlspecialchars($overviewImage) ?>" alt="<?= htmlspecialchars($overviewTitle) ?>"
+          class="overviewFeaturedImage">
       <?php endif; ?>
 
       <div class="overviewBody">
@@ -179,25 +188,27 @@ if (!empty($articleAuthors)) {
       </div>
 
       <h2>Alle Artikel zu <?= htmlspecialchars($categoryName) ?></h2>
-      
+
       <div class="articleList">
-        <?php foreach ($normalPosts as $post): 
+        <?php foreach ($normalPosts as $post):
           $postSlug = $post['slug'] ?? basename(trim(parse_url($post['link'], PHP_URL_PATH), '/'));
           $postTitle = $post['title']['rendered'] ?? 'Kein Titel';
-          $postExcerpt = strip_tags($post['excerpt']['rendered'] ?? '');
+          $postContent = $post['content']['rendered'] ?? '';
+          $postExcerpt = getFirstParagraph($postContent); // Nutze ersten Absatz statt WP-Excerpt
           $postImage = $post['_embedded']['wp:featuredmedia'][0]['source_url'] ?? '';
           $postDate = date('d.m.Y', strtotime($post['date'] ?? 'now'));
-        ?>
-          <article class="articlePreview">
+          ?>
+          <a href="artikel.php?slug=<?= urlencode($postSlug) ?>" class="articlePreview">
             <?php if ($postImage): ?>
-              <img src="<?= htmlspecialchars($postImage) ?>" alt="<?= htmlspecialchars($postTitle) ?>" class="previewImage">
+              <img src="<?= htmlspecialchars($postImage) ?>" alt="<?= htmlspecialchars($postTitle) ?>"
+                class="previewImage">
             <?php endif; ?>
             <div class="previewContent">
-              <h3><a href="artikel.php?slug=<?= urlencode($postSlug) ?>"><?= htmlspecialchars($postTitle) ?></a></h3>
+              <h3><?= htmlspecialchars($postTitle) ?></h3>
               <p class="previewDate"><?= htmlspecialchars($postDate) ?></p>
               <p><?= htmlspecialchars($postExcerpt) ?></p>
             </div>
-          </article>
+          </a>
         <?php endforeach; ?>
       </div>
 

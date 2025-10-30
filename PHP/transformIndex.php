@@ -2,6 +2,14 @@
 // filepath: c:\Users\janic\OneDrive - FH Graubünden\Journalismus Multimedial\08_Formatentwicklung\02Webseite\LMNOP Webseite\LMNOP\PHP\transformIndex.php
 header('Content-Type: application/json; charset=utf-8');
 
+// Hilfsfunktion: Extrahiere ersten Paragraphen
+function getFirstParagraph($content) {
+    if (preg_match('/<p[^>]*>(.*?)<\/p>/is', $content, $matches)) {
+        return strip_tags($matches[1]);
+    }
+    return strip_tags($content);
+}
+
 // 1) Posts mit _embed holen
 $postsUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/posts?_embed&per_page=100';
 $ch = curl_init($postsUrl);
@@ -69,20 +77,23 @@ foreach ($normalPosts as $post) {
     }
 }
 
-// 5) Finde neueste Overview-Description pro Category
+// 5) Finde neueste Overview-Description pro Category (nur erster Absatz)
 $descriptions = [];
 foreach ($overviewPosts as $op) {
     $cats = $op['categories'] ?? [];
     $otherCats = array_filter($cats, function($c) use ($overviewCatId) {
         return $c !== $overviewCatId;
     });
-    $excerpt = strip_tags($op['excerpt']['rendered'] ?? '');
+    
+    // Nutze ersten Absatz aus Content statt Excerpt
+    $content = $op['content']['rendered'] ?? '';
+    $firstParagraph = getFirstParagraph($content);
     $date = strtotime($op['date'] ?? '1970-01-01');
     
     foreach ($otherCats as $catId) {
         if (!isset($descriptions[$catId]) || $date > $descriptions[$catId]['date']) {
             $descriptions[$catId] = [
-                'text' => $excerpt,
+                'text' => $firstParagraph,
                 'date' => $date
             ];
         }
