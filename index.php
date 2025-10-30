@@ -42,6 +42,7 @@ if ($http >= 200 && $http < 300 && $response !== false) {
   <title>LMNOP Home</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="https://use.typekit.net/hbr8dui.css">
+  <link rel="icon" type="image/png" href="media/FaviconPrototype.png">
 </head>
 
 <body>
@@ -52,7 +53,6 @@ if ($http >= 200 && $http < 300 && $response !== false) {
   <main>
     <menu class="menuIndex">
       <?php foreach ($topics as $topic): 
-        // Nutze WordPress Category-Slug, fallback auf generierter Slug
         $urlTitle = $topic['slug'] ?? strtolower(preg_replace('/[^a-z0-9]+/', '-', trim($topic['title'], '-')));
       ?>
         <li class="menuIndexItem"><a href="#<?= htmlspecialchars($urlTitle) ?>"><?= htmlspecialchars($topic['title']) ?></a></li>
@@ -60,7 +60,6 @@ if ($http >= 200 && $http < 300 && $response !== false) {
     </menu>
 
     <?php foreach ($topics as $topic): 
-      // Nutze WordPress Category-Slug
       $urlTitle = $topic['slug'] ?? strtolower(preg_replace('/[^a-z0-9]+/', '-', trim($topic['title'], '-')));
       $overviewUrl = "uebersicht.php?slug=" . urlencode($urlTitle);
     ?>
@@ -73,15 +72,16 @@ if ($http >= 200 && $http < 300 && $response !== false) {
           <?php 
           $sideArticles = array_slice($topic['articles'] ?? [], 0, 2);
           foreach ($sideArticles as $idx => $article): 
-            // Nutze WordPress Post-Slug direkt
             $articleSlug = $article['slug'] ?? basename(trim(parse_url($article['link'], PHP_URL_PATH), '/'));
             $articleUrl = "artikel.php?slug=" . urlencode($articleSlug);
+            $articleImage = $article['image'] ?? '';
             
             $randRot = number_format((mt_rand(-80, 80) / 10), 1);
-            $posX = ($idx === 0) ? '0%' : '85%';
             $randY = mt_rand(-60, 60);
           ?>
-            <a href="<?= htmlspecialchars($articleUrl) ?>" class="sideArticle" style="--rot:<?= $randRot ?>deg; --posX:<?= $posX ?>; --y:<?= $randY ?>px; text-decoration:none; color:inherit;">
+            <a href="<?= htmlspecialchars($articleUrl) ?>" 
+               class="sideArticle <?= $articleImage ? 'hasImage' : '' ?>" 
+               style="--rot: <?= $randRot ?>deg; --y: <?= $randY ?>px; <?= $articleImage ? '--bg-image: url(\'' . htmlspecialchars($articleImage) . '\');' : '' ?>">
               <h2 class="sideArticleText"><?= htmlspecialchars($article['title']) ?></h2>
             </a>
           <?php endforeach; ?>

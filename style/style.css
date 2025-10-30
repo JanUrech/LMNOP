@@ -79,10 +79,16 @@ header {
 .logoBarText {
     display: none;
     min-width: 35%;
-    aspect-ratio: default;
+    font-size: 3.5vw;
     aspect-ratio: 10 / 1;
     height: auto;
-    object-fit: contain;
+    justify-content: space-around;
+    align-content: center;
+}
+
+.logoBarText p{
+    font-size: 3.5vw;
+    font-family: "cheee-jimbo", sans-serif;
 }
 
 #headerLogo {

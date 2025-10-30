@@ -1,9 +1,9 @@
 // Header-HTML als Template-String
 const headerHTML = `
 <div class="logoBar">
-  <img src="media/header/ABCDE.png" alt="" class="logoBarText">
+  <div class="logoBarText"><p>A</p><p>B</p><p>C</p><p>D</p><p>E</p><p>F</p><p>G</p><p>H</p><p>I</p><p>J</p><p>K</p></div>
   <a href="index.php"><img src="media/header/logo_rosa_grau.png" alt="Startseite" id="headerLogo"></a>
-  <img src="media/header/QRSTU.png" alt="" class="logoBarText">
+  <div class="logoBarText"><p>Q</p><p>R</p><p>S</p><p>T</p><p>U</p><p>V</p><p>W</p><p>X</p><p>Y</p><p>Z</p></div>
 </div>
   <menu id="headerMenu">
     <li><a href="aboutus.html" class="headerMenuItem">About us</a></li>
