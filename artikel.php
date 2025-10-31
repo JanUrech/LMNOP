@@ -104,6 +104,7 @@ if (!empty($articleAuthors)) {
   <title><?= htmlspecialchars($title) ?> - LMNOP</title>
   <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="https://use.typekit.net/hbr8dui.css">
+  <link rel="icon" type="image/png" href="media/FaviconPrototype.png">
 </head>
 
 <body>

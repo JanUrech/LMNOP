@@ -11,7 +11,7 @@ body {
     font-weight: 300;
 
     /* Hintergrundbild oben zentriert, darf sich wiederholen falls nötig */
-    background-image: url('../media/Background\ Webpage\ LMNOP.svg');
+    background-image: url(../media/Backgroundimage.svg);
     background-repeat: repeat-y;
     background-size: 100vw auto;
     background-position: top center;
@@ -26,10 +26,6 @@ body {
 
 html {
     scroll-behavior: smooth;
-}
-
-main {
-    padding: 0 2rem 2rem 2rem;
 }
 
 
