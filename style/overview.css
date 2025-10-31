@@ -7,8 +7,9 @@
 }
 
 .overviewContent {
-    padding: 2rem;
+    margin: 0;
 }
+   
 
 .overviewContent h1 {
     margin-bottom: 1rem;
@@ -59,31 +60,25 @@
 
 .articlePreview {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
+    align-items: center;
 }
 
-/* Jeder zweite Artikel: Text zuerst, dann Bild */
-.articlePreview:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-.articlePreview:nth-child(even) .previewContent{
-padding-left: 0;
-}
 
 .previewImage {
-    width: 33%;
+    width: 100%;
+    max-height: 300px;
     height: auto;
     object-fit: cover;
     aspect-ratio: 1/1;
+    margin-bottom: 10px;
 }
 
 .previewContent {
-    width: 67%;
-    padding: 1.5rem;
+    width: 100%;
 }
 
 .previewContent h3 {
@@ -92,9 +87,7 @@ padding-left: 0;
     color: #333;
 }
 
-.articlePreview:hover .previewContent h3 {
-    color: #F3C4F7;
-}
+
 
 .previewDate {
     color: #666;
@@ -118,4 +111,44 @@ padding-left: 0;
 
 .backLink:hover {
     text-decoration: underline;
+}
+
+@media (min-width: 900px) {
+
+.previewImage {
+    width: 33%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+
+.previewContent {
+    width: 67%;
+    padding: 1.5rem;
+}
+
+.previewContent h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+.articlePreview {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Jeder zweite Artikel: Text zuerst, dann Bild */
+.articlePreview:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.articlePreview:nth-child(even) .previewContent{
+padding-left: 0;
+}
+
+
 }

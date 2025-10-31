@@ -37,17 +37,17 @@ fetch('Data/authorsList.json')
         const randX = (Math.random() * 180 - 30).toFixed(1);
         postitDiv.style.transform = `rotate(${randRot}deg) translateX(${randX}%)`;
 
-        const h5 = document.createElement('h2');
-        h5.classList.add('memberName');
-        h5.textContent = member.Name;
+        const pName = document.createElement('p');
+        pName.classList.add('memberName');
+        pName.textContent = member.Name;
 
-        const p = document.createElement('p');
-        p.classList.add('memberRole');
-        p.textContent = `${member.role}`;
+        const pRole = document.createElement('p');
+        pRole.classList.add('memberRole');
+        pRole.textContent = `${member.role}`;
 
         // Zusammenbauen
-        postitDiv.appendChild(h5);
-        postitDiv.appendChild(p);
+        postitDiv.appendChild(pName);
+        postitDiv.appendChild(pRole);
 
         photoDiv.appendChild(imgStandard);
         photoDiv.appendChild(imgHover);

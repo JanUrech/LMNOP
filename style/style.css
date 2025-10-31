@@ -66,7 +66,7 @@ header {
     max-width: 100%;
     height: auto;
     flex-direction: column;
-    padding: 2rem;
+    padding: 2rem 2rem 0 2rem;
 }
 
 .logoBar {
@@ -99,6 +99,7 @@ header {
     height: auto;
     width: 100%;
     min-width: 30vw;
+    max-width: 300px;
     margin: 0 auto;
     display: block;
 }
@@ -174,21 +175,8 @@ footer {
         display: block;
     }
 
-    .heroArticle {
-        width: 70%;
-        padding: 0 15% 0 15%;
-    }
 
-    .sideArticle {
-        /* Positionierung über CSS-Variablen für flexible Gestaltung */
-        top: 50%;
-        left: var(--posX, 0%);
-        transform: translate(-50%, calc(-50% + var(--y, 0px))) rotate(var(--rot, 0deg));
 
-        width: 25%;
-        max-width: none;
-        margin: 0;
-    }
 
     #headerMenu {
         flex-direction: row;
