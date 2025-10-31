@@ -1,7 +1,7 @@
 [
   {
     "Name": "Aaron Täschler",
-    "role": "Webpage",
+    "role": "Lektorat",
     "themengebiet": "Männlichkeit",
     "fotoStandard": "media/TeamMitglieder/AaronStandard.jpg",
     "fotoHover": "media/TeamMitglieder/AaronFisheye.jpg"
@@ -15,7 +15,7 @@
   },
   {
     "Name": "Cecilia Comisso",
-    "role": "Webpage",
+    "role": "Social Media",
     "themengebiet": "Männlichkeit",
     "fotoStandard": "media/TeamMitglieder/CeciliaStandard.jpg",
     "fotoHover": "media/TeamMitglieder/CeciliaFisheye.jpg"
@@ -50,28 +50,28 @@
   },
   {
     "Name": "Muriel Lüthi",
-    "role": "Webpage",
+    "role": "Social Media",
     "themengebiet": "Männlichkeit",
     "fotoStandard": "media/TeamMitglieder/MurielStandard.jpg",
     "fotoHover": "media/TeamMitglieder/MurielFisheye.jpg"
   },
   {
     "Name": "Norina Bieler",
-    "role": "Teamlead",
+    "role": "Projektleitung",
     "themengebiet": "Männlichkeit",
     "fotoStandard": "media/TeamMitglieder/NorinaStandard.jpg",
     "fotoHover": "media/TeamMitglieder/NorinaFisheye.jpg"
   },
   {
     "Name": "Pascal Rupp",
-    "role": "Teamlead",
+    "role": "Projektleitung",
     "themengebiet": "Gesundheitssystem",
     "fotoStandard": "media/TeamMitglieder/PascalStandard.jpg",
     "fotoHover": "media/TeamMitglieder/PascalFisheye.jpg"
   },
   {
     "Name": "Tobias Kunz",
-    "role": "Webpage",
+    "role": "Social Media",
     "themengebiet": "Männlichkeit",
     "fotoStandard": "media/TeamMitglieder/TobiasStandard.jpg",
     "fotoHover": "media/TeamMitglieder/TobiasFisheye.jpg"

@@ -92,6 +92,7 @@ header {
     margin: 0;
     display: table-cell;
     vertical-align: middle;
+    color: #656666;
 }
 
 #headerLogo {

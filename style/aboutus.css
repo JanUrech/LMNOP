@@ -8,15 +8,31 @@ About us
     flex-grow: 1;
     /* füllt den verfügbaren Raum zwischen Header und Footer */
     gap: 4rem;
+    width: 90%;
 }
 
 #teamPhoto {
     position: relative;
-    width: 80%;
+    width: 90%;
     /* Passe die Größe nach Bedarf an */
     margin: 0 auto;
     height: auto;
-    max-width: 600px;
+    max-width: 1000px;
+}
+#teamPhotoStandard{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+.aboutUsIntro {
+    font-family: "itc-avant-garde-gothic-pro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1.2rem;
+     max-width: 1000px;
+    margin: auto;
+    padding: 0 1rem;
+    width: 90%;
 }
 
 /* ================================
@@ -52,7 +68,7 @@ About us
     /* Obergrenze */
     box-sizing: border-box;
     /* Padding/Borders zählen zur Breite */
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 6 / 7;
     /* gewünschtes Seitenverhältnis */
     height: auto;
     /* wichtig: Höhe von aspect-ratio ableiten lassen */
@@ -72,15 +88,16 @@ About us
     font-family: "itc-avant-garde-gothic-pro", sans-serif;
     font-weight: 700;
     font-style: normal;
-    font-size: 1.5rem;
+    font-size: 1rem;
     margin: 0 0 0.5rem 0;
+    color: black;
 }
 
 .memberRole {
     font-family: "itc-avant-garde-gothic-pro", sans-serif;
     font-weight: 300;
     font-style: normal;
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin: 0;
 }
 

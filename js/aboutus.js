@@ -34,19 +34,19 @@ fetch('Data/authorsList.json')
         // Zufällige Rotation zwischen -8deg und +8deg
         const randRot = (Math.random() * 16 - 8).toFixed(1);
         // Zufällige horizontale Verschiebung zwischen -50% und +50%
-        const randX = (Math.random() * 150 - 50).toFixed(1);
+        const randX = (Math.random() * 180 - 30).toFixed(1);
         postitDiv.style.transform = `rotate(${randRot}deg) translateX(${randX}%)`;
 
-        const h2 = document.createElement('h2');
-        h2.classList.add('memberName');
-        h2.textContent = member.Name;
+        const h5 = document.createElement('h2');
+        h5.classList.add('memberName');
+        h5.textContent = member.Name;
 
         const p = document.createElement('p');
         p.classList.add('memberRole');
-        p.textContent = `Rolle: ${member.role}`;
+        p.textContent = `${member.role}`;
 
         // Zusammenbauen
-        postitDiv.appendChild(h2);
+        postitDiv.appendChild(h5);
         postitDiv.appendChild(p);
 
         photoDiv.appendChild(imgStandard);
