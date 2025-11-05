@@ -2,6 +2,7 @@
 @import "aboutus.css";
 @import "article.css";
 @import "overview.css";
+@import "bubbles.css";
 
 /* ================================
    GLOBALS – Grundlayout der Seite
@@ -11,10 +12,11 @@ body {
     font-weight: 300;
 
     /* Hintergrundbild oben zentriert, darf sich wiederholen falls nötig */
-    background-image: url(../media/Backgroundimage.svg);
+    /* background-image: url(../media/Backgroundimage.svg);
     background-repeat: repeat-y;
     background-size: 100vw auto;
-    background-position: top center;
+    background-position: top center; */
+    background-color: whitesmoke;
 
     margin: 0;
     -webkit-font-smoothing: antialiased;
@@ -22,12 +24,13 @@ body {
     /* Inhalt vertikal anordnen */
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow-x: hidden; /* Verhindert horizontales Scrollen durch Bubbles */
 }
 
 html {
     scroll-behavior: smooth;
 }
-
 
 p {
     font-family: "itc-avant-garde-gothic-pro", sans-serif;
@@ -100,7 +103,6 @@ header {
     display: block;
 }
 
-
 #headerMenu {
     display: flex;
     flex-direction: column;
@@ -119,8 +121,6 @@ header {
     text-decoration: none;
 }
 
-
-
 /* ================================
    FOOTER – Seitenende
    ================================ */
@@ -136,15 +136,12 @@ footer {
     padding-top: 20px;
 }
 
-
 #footerLogo {
     height: auto;
     width: 75%;
     max-width: 200px;
     margin: 0 auto 1rem auto;
 }
-
-
 
 /* ================================
    DESKTOP-ANPASSUNG – Ab 900px
@@ -170,9 +167,6 @@ footer {
     .menuIndex {
         display: block;
     }
-
-
-
 
     #headerMenu {
         flex-direction: row;

@@ -46,7 +46,18 @@ if ($http >= 200 && $http < 300 && $response !== false) {
 </head>
 
 <body>
-  <header>
+    <!-- Bubble Container für animierte Hintergrund-Bubbles -->
+    <div class="bubble-container">
+        <img src="media/Background/bubble_vektor_06.svg" alt="" class="bubble bubble-1">
+        <img src="media/Background/bubble_vektor_05.svg" alt="" class="bubble bubble-2">
+        <img src="media/Background/bubble_vektor_08.svg" alt="" class="bubble bubble-3">
+        <img src="media/Background/bubble_vektor_09.svg" alt="" class="bubble bubble-4">
+        <img src="media/Background/bubbles_vektor_02.svg" alt="" class="bubble bubble-5">
+        <img src="media/Background/bubble_vektor_05.svg" alt="" class="bubble bubble-6">
+        <img src="media/Background/bubble_vektor_06.svg" alt="" class="bubble bubble-7">
+    </div>
+    
+    <header>
     <!-- Header wird durch script.js befüllt -->
   </header>
 
@@ -95,6 +106,7 @@ if ($http >= 200 && $http < 300 && $response !== false) {
   </footer>
 
   <script src="js/script.js"></script>
+  <script src="js/bubbles.js"></script>
 </body>
 
 </html>
