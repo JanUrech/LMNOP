@@ -233,8 +233,8 @@ function getFirstParagraph($content) {
     <!-- Footer wird durch script.js befüllt -->
   </footer>
 
-  <script src="js/script.js"></script>
   <script src="js/bubbles.js"></script>
+  <script src="js/script.js"></script>
 </body>
 
 </html>
