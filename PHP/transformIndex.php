@@ -52,6 +52,15 @@ foreach ($categories as $cat) {
     }
 }
 
+// Debug log after categories fetch
+$debugLog = [
+    'total_categories' => count($categories),
+    'category_names' => array_map(function($cat) {
+        return $cat['name'];
+    }, $categories),
+    'posts_per_category' => []
+];
+
 // 3) Trenne Overview-Posts und normale Posts
 $overviewPosts = [];
 $normalPosts = [];
@@ -75,6 +84,11 @@ foreach ($normalPosts as $post) {
         }
         $grouped[$catId][] = $post;
     }
+}
+
+// Debug log after grouping posts
+foreach ($grouped as $catId => $posts) {
+    $debugLog['posts_per_category'][$catMap[$catId]] = count($posts);
 }
 
 // 5) Finde neueste Overview-Description pro Category (nur erster Absatz)
@@ -130,6 +144,9 @@ foreach ($grouped as $catId => $postsInCat) {
         'articles'    => $articles
     ];
 }
+
+// Debug log file output
+file_put_contents('debug_categories.json', json_encode($debugLog, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 echo json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 ?>

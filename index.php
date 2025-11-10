@@ -95,18 +95,11 @@ if ($http >= 200 && $http < 300 && $response !== false) {
   </main>
 
   <footer>
-    <ul id=footerMenu>
-      <li> <a href="aboutus.html" class="footerMenuItem">Über Uns</a></li>
-      <li><a href="datenschutz.html" class="footerMenuItem">Datenschutzerklärung </a></li>
-      <li><a href="impressum.html" class="footerMenuItem">Impressum </a></li>
 
-    </ul>
-
-    <img src="media/header/logo_rosa_grau.png" alt="" id="footerLogo">>
   </footer>
 
   <script src="js/bubbles.js"></script>
-  <!-- <script src="js/script.js"></script> -->
+  <script src="js/script.js"></script>
 </body>
 
 </html>

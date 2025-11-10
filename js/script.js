@@ -12,17 +12,14 @@ const headerHTML = `
 `;
 
 const footerHTML = `
-<div>
-  <h6>Impressum</h6>
-  <p>Herausgeber: LMNOP Verlag</p>
-  <p>Adresse: Musterstrasse 1, 7000 Chur</p>
-  <p>Kontakt:
-    <a href="mailto:  janic.urech@stud.fhgr.ch"> Mail</a> |
-    <a href="tel:+41791234567"> Tel</a>
-  </p>
-</div>
+    <ul id=footerMenu>
+      <li> <a href="aboutus.html" class="footerMenuItem">Über Uns</a></li>
+      <li><a href="datenschutz.html" class="footerMenuItem">Datenschutzerklärung </a></li>
+      <li><a href="impressum.html" class="footerMenuItem">Impressum </a></li>
 
-<img src="media/header/logo_rosa_grau.png" alt="" id="footerLogo">
+    </ul>
+
+    <img src="media/header/logo_rosa_grau.png" alt="" id="footerLogo">
 `;
 
 // Füge den Header und Footer in jedes vorhandene <header> / <footer>-Element ein
@@ -40,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Smooth Scroll für Menü-Links
   const menuIndex = document.querySelector('.menuIndex');
   if (menuIndex) {
-    menuIndex.addEventListener('click', function(e) {
+    menuIndex.addEventListener('click', function (e) {
       const link = e.target.closest('a');
       if (!link) return;
       const href = link.getAttribute('href');
