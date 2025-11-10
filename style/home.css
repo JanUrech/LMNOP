@@ -1,6 +1,10 @@
 /* ================================
    HOME PAGE STYLING
    ================================ */
+   #indexMain {
+    margin-top: 5vh;
+
+}
 
 /* ================================
    SECTION – Thematische Container
@@ -10,7 +14,7 @@
     width: 80vw;
     max-width: 700px;
     margin: auto;
-    margin-bottom: 40vw;
+    margin-bottom: 50vw;
     height: auto;
 }
 
@@ -18,7 +22,7 @@
    TITEL – Überschrift eines Abschnitts
    ================================ */
 .topicTitle {
-    font-size: 2.5rem;
+    font-size: 6vw;
     margin-bottom: 1rem;
     text-align: center;
     font-family: "cheee-jimbo", sans-serif;
@@ -66,7 +70,7 @@
     /* Mobile: Feste Positionierung */
     transform: translateY(-20%) rotate(var(--rot, 0deg));
 
-    width: 30%;
+    width: 40%;
     max-width: 180px;
     aspect-ratio: 2 / 3;
 
@@ -136,7 +140,7 @@
 .menuIndex {
     display: none;
     position: fixed;
-    bottom: 10vh;
+    bottom: 20vh;
     left: 0;
     width: 25%;
     z-index: 1000;
@@ -200,5 +204,10 @@
     .sideArticle:nth-of-type(2) {
         left: 100%;
         right: auto;
+    }
+
+    .topicTitle {
+        font-size: 3.5;
+
     }
 }

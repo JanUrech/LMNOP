@@ -30,7 +30,7 @@ curl_close($ch);
 
 $topics = [];
 if ($http >= 200 && $http < 300 && $response !== false) {
-    $topics = json_decode($response, true) ?: [];
+  $topics = json_decode($response, true) ?: [];
 }
 ?>
 <!DOCTYPE html>
@@ -46,45 +46,46 @@ if ($http >= 200 && $http < 300 && $response !== false) {
 </head>
 
 <body>
-    <!-- Bubble Container für animierte Hintergrund-Bubbles -->
-    <div class="bubble-container"></div>
+  <!-- Bubble Container für animierte Hintergrund-Bubbles -->
+  <div class="bubble-container"></div>
 
-    <header>
+  <header>
     <!-- Header wird durch script.js befüllt -->
   </header>
 
-  <main>
+  <main id="indexMain">
     <menu class="menuIndex">
-      <?php foreach ($topics as $topic): 
+      <?php foreach ($topics as $topic):
         $urlTitle = $topic['slug'] ?? strtolower(preg_replace('/[^a-z0-9]+/', '-', trim($topic['title'], '-')));
-      ?>
-        <li class="menuIndexItem"><a href="#<?= htmlspecialchars($urlTitle) ?>"><?= htmlspecialchars($topic['title']) ?></a></li>
+        ?>
+        <li class="menuIndexItem"><a
+            href="#<?= htmlspecialchars($urlTitle) ?>"><?= htmlspecialchars($topic['title']) ?></a></li>
       <?php endforeach; ?>
     </menu>
 
-    <?php foreach ($topics as $topic): 
+    <?php foreach ($topics as $topic):
       $urlTitle = $topic['slug'] ?? strtolower(preg_replace('/[^a-z0-9]+/', '-', trim($topic['title'], '-')));
       $overviewUrl = "uebersicht.php?slug=" . urlencode($urlTitle);
-    ?>
+      ?>
       <section class="topicSection" id="<?= htmlspecialchars($urlTitle) ?>">
         <h2 class="topicTitle"><?= htmlspecialchars($topic['title']) ?></h2>
-        
-        <article class="heroArticle" onclick="window.location.href='<?= htmlspecialchars($overviewUrl) ?>'" style="cursor:pointer;">
+
+        <article class="heroArticle" onclick="window.location.href='<?= htmlspecialchars($overviewUrl) ?>'"
+          style="cursor:pointer;">
           <p><?= htmlspecialchars($topic['description'] ?? '') ?></p>
-          
-          <?php 
+
+          <?php
           $sideArticles = array_slice($topic['articles'] ?? [], 0, 2);
-          foreach ($sideArticles as $idx => $article): 
+          foreach ($sideArticles as $idx => $article):
             $articleSlug = $article['slug'] ?? basename(trim(parse_url($article['link'], PHP_URL_PATH), '/'));
             $articleUrl = "artikel.php?slug=" . urlencode($articleSlug);
             $articleImage = $article['image'] ?? '';
-            
+
             $randRot = number_format((mt_rand(-80, 80) / 10), 1);
             $randY = mt_rand(-60, 60);
-          ?>
-            <a href="<?= htmlspecialchars($articleUrl) ?>" 
-               class="sideArticle <?= $articleImage ? 'hasImage' : '' ?>" 
-               style="--rot: <?= $randRot ?>deg; --y: <?= $randY ?>px; <?= $articleImage ? '--bg-image: url(\'' . htmlspecialchars($articleImage) . '\');' : '' ?>">
+            ?>
+            <a href="<?= htmlspecialchars($articleUrl) ?>" class="sideArticle <?= $articleImage ? 'hasImage' : '' ?>"
+              style="--rot: <?= $randRot ?>deg; --y: <?= $randY ?>px; <?= $articleImage ? '--bg-image: url(\'' . htmlspecialchars($articleImage) . '\');' : '' ?>">
               <h2 class="sideArticleText"><?= htmlspecialchars($article['title']) ?></h2>
             </a>
           <?php endforeach; ?>
@@ -94,11 +95,18 @@ if ($http >= 200 && $http < 300 && $response !== false) {
   </main>
 
   <footer>
-    <!-- Footer wird durch script.js befüllt -->
+    <ul id=footerMenu>
+      <li> <a href="aboutus.html" class="footerMenuItem">Über Uns</a></li>
+      <li><a href="datenschutz.html" class="footerMenuItem">Datenschutzerklärung </a></li>
+      <li><a href="impressum.html" class="footerMenuItem">Impressum </a></li>
+
+    </ul>
+
+    <img src="media/header/logo_rosa_grau.png" alt="" id="footerLogo">>
   </footer>
 
   <script src="js/bubbles.js"></script>
-  <script src="js/script.js"></script>
+  <!-- <script src="js/script.js"></script> -->
 </body>
 
 </html>

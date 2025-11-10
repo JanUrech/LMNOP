@@ -27,7 +27,8 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow-x: hidden; /* Verhindert horizontales Scrollen durch Bubbles */
+    overflow-x: hidden;
+    /* Verhindert horizontales Scrollen durch Bubbles */
 }
 
 html {
@@ -38,6 +39,7 @@ p {
     font-family: "itc-avant-garde-gothic-pro", sans-serif;
     font-weight: 300;
     font-style: normal;
+    font-size: 1.1rem;
 }
 
 h2 {
@@ -136,13 +138,39 @@ footer {
     width: 100%;
     color: #acacac;
     padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#footerMenu {
+    align-items: left;
+    height: max-content;
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#footerMenu li {
+    text-align: left;
+}
+
+.footerMenuItem {
+    font-family: "itc-avant-garde-gothic-pro", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem 0;
+    color: #F3C4F7;
+    text-align: left;
+    padding-left: 1rem;
+    text-decoration: none;
 }
 
 #footerLogo {
     height: auto;
     width: 75%;
-    max-width: 200px;
-    margin: 0 auto 1rem auto;
+    max-width: 300px;
 }
 
 /* ================================
@@ -174,5 +202,11 @@ footer {
         flex-direction: row;
         justify-content: flex-end;
         gap: 4vw;
+    }
+
+    footer {
+        flex-direction: row;
+        justify-content: space-between;
+        max-height: 20vh;
     }
 }
