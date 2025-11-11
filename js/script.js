@@ -17,6 +17,7 @@ const footerHTML = `
       <li> <a href="aboutus.html" class="footerMenuItem">Über Uns</a></li>
       <li><a href="datenschutz.html" class="footerMenuItem">Datenschutzerklärung </a></li>
       <li><a href="impressum.html" class="footerMenuItem">Impressum </a></li>
+      <li><a href="https://www.instagram.com/lmnop_mag/" class="footerMenuItem">Instagram </a></li>
 
     </ul>
 

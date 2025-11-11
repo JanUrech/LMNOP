@@ -35,7 +35,18 @@ if (!$post) {
 $title = $post['title']['rendered'] ?? 'Kein Titel';
 $content = $post['content']['rendered'] ?? '';
 $excerpt = $post['excerpt']['rendered'] ?? '';
-$date = date('d.m.Y', strtotime($post['date'] ?? 'now'));
+
+// Hilfsfunktion: Datum im Format "11. Januar 2025"
+function formatDateLong($dateString) {
+    $ts = strtotime($dateString ?: 'now');
+    $months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    $d = date('j', $ts);
+    $m = $months[intval(date('n', $ts)) - 1];
+    $y = date('Y', $ts);
+    return "{$d}. {$m} {$y}";
+}
+
+$date = formatDateLong($post['date'] ?? 'now');
 $featuredImage = $post['_embedded']['wp:featuredmedia'][0]['source_url'] ?? '';
 
 // Trenne ersten Paragraphen vom Rest

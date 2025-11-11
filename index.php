@@ -75,18 +75,32 @@ if ($http >= 200 && $http < 300 && $response !== false) {
           <p><?= htmlspecialchars($topic['description'] ?? '') ?></p>
 
           <?php
-          $sideArticles = array_slice($topic['articles'] ?? [], 0, 2);
+          // Alle Artikel der Kategorie (Fallback leeres Array)
+          $articlesAll = $topic['articles'] ?? [];
+
+          // Nach Datum absteigend sortieren (neueste zuerst). Prüft mehrere mögliche Datum-Felder.
+          usort($articlesAll, function($a, $b) {
+            $da = $a['date'] ?? $a['published'] ?? $a['post_date'] ?? '';
+            $db = $b['date'] ?? $b['published'] ?? $b['post_date'] ?? '';
+            $ta = strtotime($da) ?: 0;
+            $tb = strtotime($db) ?: 0;
+            return $tb <=> $ta; // newest first
+          });
+
+          // Immer die zwei neuesten Side-Articles verwenden (falls vorhanden)
+          $sideArticles = array_slice($articlesAll, 0, 2);
+          // Hero/Overview bleibt immer sichtbar (auch wenn $sideArticles leer)
           foreach ($sideArticles as $idx => $article):
-            $articleSlug = $article['slug'] ?? basename(trim(parse_url($article['link'], PHP_URL_PATH), '/'));
-            $articleUrl = "artikel.php?slug=" . urlencode($articleSlug);
-            $articleImage = $article['image'] ?? '';
+             $articleSlug = $article['slug'] ?? basename(trim(parse_url($article['link'], PHP_URL_PATH), '/'));
+             $articleUrl = "artikel.php?slug=" . urlencode($articleSlug);
+             $articleImage = $article['image'] ?? '';
 
-            // Debug output
-            error_log("Article {$idx}: " . ($articleImage ? "Has image: {$articleImage}" : "No image"));
+             // Debug output
+             error_log("Article {$idx}: " . ($articleImage ? "Has image: {$articleImage}" : "No image"));
 
-            $randRot = number_format((mt_rand(-80, 80) / 10), 1);
-            $randY = mt_rand(-60, 60);
-            ?>
+             $randRot = number_format((mt_rand(-80, 80) / 10), 1);
+             $randY = mt_rand(-60, 60);
+             ?>
             <a href="<?= htmlspecialchars($articleUrl) ?>" 
                class="sideArticle <?= !empty($articleImage) ? 'hasImage' : '' ?>"
                style="--rot: <?= $randRot ?>deg; --y: <?= $randY ?>px; <?= !empty($articleImage) ? '--bg-image: url(\'' . htmlspecialchars($articleImage) . '\');' : '' ?>">

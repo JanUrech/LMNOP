@@ -76,11 +76,21 @@ foreach ($posts as $post) {
   }
 }
 
+// Hilfsfunktion: Datum im Format "11. Januar 2025"
+function formatDateLong($dateString) {
+    $ts = strtotime($dateString ?: 'now');
+    $months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    $d = date('j', $ts);
+    $m = $months[intval(date('n', $ts)) - 1];
+    $y = date('Y', $ts);
+    return "{$d}. {$m} {$y}";
+}
+
 $categoryName = $category['name'] ?? 'Übersicht';
 $overviewTitle = $overviewPost['title']['rendered'] ?? $categoryName;
 $overviewContent = $overviewPost['content']['rendered'] ?? '';
 $overviewImage = $overviewPost['_embedded']['wp:featuredmedia'][0]['source_url'] ?? '';
-$overviewDate = date('d.m.Y', strtotime($overviewPost['date'] ?? 'now'));
+$overviewDate = formatDateLong($overviewPost['date'] ?? 'now');
 
 // Trenne ersten Paragraphen vom Rest (für Overview)
 $firstParagraph = '';
@@ -198,7 +208,7 @@ function getFirstParagraph($content) {
           $postContent = $post['content']['rendered'] ?? '';
           $postExcerpt = getFirstParagraph($postContent); // Nutze ersten Absatz statt WP-Excerpt
           $postImage = $post['_embedded']['wp:featuredmedia'][0]['source_url'] ?? '';
-          $postDate = date('d.m.Y', strtotime($post['date'] ?? 'now'));
+          $postDate = formatDateLong($post['date'] ?? 'now');
           ?>
           <a href="artikel.php?slug=<?= urlencode($postSlug) ?>" class="articlePreview">
             <?php if ($postImage): ?>
