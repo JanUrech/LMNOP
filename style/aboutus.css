@@ -7,7 +7,7 @@ About us
     position: relative;
     width: 90%;
     /* Passe die Größe nach Bedarf an */
-    margin: 0 auto;
+    margin-bottom: 30px;
     height: auto;
     max-width: 1000px;
 }
@@ -84,7 +84,6 @@ About us
 
 /* Teambild als Featured Image formatiert */
 #teamPhoto {
-    margin: 0;
     padding: 0;
 }
 

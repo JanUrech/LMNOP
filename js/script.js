@@ -21,7 +21,7 @@ const footerHTML = `
 
     </ul>
 
-    <img src="media/header/logo_rosa_grau.png" alt="" id="footerLogo">
+    <a href="index.php"><img src="media/header/logo_rosa_grau.png" alt="" id="footerLogo"></a>
 `;
 
 // Füge den Header und Footer in jedes vorhandene <header> / <footer>-Element ein

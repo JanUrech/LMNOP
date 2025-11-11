@@ -43,6 +43,12 @@ p {
     color: black;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+}
+
 h2 {
     font-family: "itc-avant-garde-gothic-pro", sans-serif;
     font-weight: 700;
@@ -194,6 +200,31 @@ footer {
 .impressumText {
     margin-bottom: 1.5rem;
     margin-top: 1.5rem;
+}
+
+
+/* ================================
+   DOWNLOAD BUTTON – Download-Button Styling
+   ================================ */
+.downloadButton {
+    display: inline-flex;
+    align-items: center;      /* vertikal zentrieren */
+    justify-content: center;  /* horizontal zentrieren (falls nötig) */
+    gap: 0.5rem;
+    padding: 0 1.5rem;        /* oben/unten feste Höhe über 'height' */
+    background: #0A4708;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    height: 50px;             /* fixe Höhe */
+    line-height: 1;           /* verhindert Text-Verschiebung */
+    box-sizing: border-box;
+}
+
+.downloadButton:hover {
+    opacity: 0.9;
 }
 
 /* ================================
