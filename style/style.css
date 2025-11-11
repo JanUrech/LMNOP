@@ -114,13 +114,15 @@ header {
     justify-content: flex-end;
     padding: 0 1rem 0 0;
     list-style: none;
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
 .headerMenuItem {
     font-family: "itc-avant-garde-gothic-pro", sans-serif;
     font-weight: 700;
     font-style: normal;
-    font-size: 2rem;
+    font-size: 1.4rem;
     color: #0A4708;
     text-decoration: none;
 }

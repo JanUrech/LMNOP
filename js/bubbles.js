@@ -64,7 +64,7 @@ function createRandomBubble(index, offsetTop = 0) {
     bubble.style.left = `${left}%`;
     
     // Zufällige Opacity
-    bubble.style.opacity = random(0.2, 0.4);
+    bubble.style.opacity = random(0.1, 0.25);
     
     // Zufällige Animation
     const animationName = generateRandomAnimation(index);

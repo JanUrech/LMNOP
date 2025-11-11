@@ -6,6 +6,7 @@ const headerHTML = `
   <div class="logoBarText"><p>Q</p><p>R</p><p>S</p><p>T</p><p>U</p><p>V</p><p>W</p><p>X</p><p>Y</p><p>Z</p></div>
 </div>
   <menu id="headerMenu">
+   <li><a href="index.php" class="headerMenuItem">Home</a></li>
     <li><a href="aboutus.html" class="headerMenuItem">About us</a></li>
     <li><a href="impressum.html" class="headerMenuItem">Impressum</a></li>
   </menu>

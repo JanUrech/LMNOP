@@ -117,10 +117,6 @@ foreach ($overviewPosts as $op) {
 // 6) Baue Zielstruktur
 $result = [];
 foreach ($grouped as $catId => $postsInCat) {
-    if ($catId === $overviewCatId) continue;
-    
-    $catName = $catMap[$catId] ?? "Unbekannt";
-    $catSlug = $catSlugMap[$catId] ?? strtolower(preg_replace('/[^a-z0-9]+/', '-', $catName));
     $description = $descriptions[$catId]['text'] ?? '';
     
     $articles = [];
@@ -138,8 +134,8 @@ foreach ($grouped as $catId => $postsInCat) {
     }
     
     $result[] = [
-        'title'       => $catName,
-        'slug'        => $catSlug,
+        'title'       => $catMap[$catId],
+        'slug'        => $catSlugMap[$catId],
         'description' => $description,
         'articles'    => $articles
     ];

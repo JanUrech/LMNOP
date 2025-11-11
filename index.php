@@ -81,12 +81,16 @@ if ($http >= 200 && $http < 300 && $response !== false) {
             $articleUrl = "artikel.php?slug=" . urlencode($articleSlug);
             $articleImage = $article['image'] ?? '';
 
+            // Debug output
+            error_log("Article {$idx}: " . ($articleImage ? "Has image: {$articleImage}" : "No image"));
+
             $randRot = number_format((mt_rand(-80, 80) / 10), 1);
             $randY = mt_rand(-60, 60);
             ?>
-            <a href="<?= htmlspecialchars($articleUrl) ?>" class="sideArticle <?= $articleImage ? 'hasImage' : '' ?>"
-              style="--rot: <?= $randRot ?>deg; --y: <?= $randY ?>px; <?= $articleImage ? '--bg-image: url(\'' . htmlspecialchars($articleImage) . '\');' : '' ?>">
-              <h2 class="sideArticleText"><?= htmlspecialchars($article['title']) ?></h2>
+            <a href="<?= htmlspecialchars($articleUrl) ?>" 
+               class="sideArticle <?= !empty($articleImage) ? 'hasImage' : '' ?>"
+               style="--rot: <?= $randRot ?>deg; --y: <?= $randY ?>px; <?= !empty($articleImage) ? '--bg-image: url(\'' . htmlspecialchars($articleImage) . '\');' : '' ?>">
+                <h2 class="sideArticleText"><?= htmlspecialchars($article['title']) ?></h2>
             </a>
           <?php endforeach; ?>
         </article>
