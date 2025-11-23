@@ -248,3 +248,9 @@ function getFirstParagraph($content) {
 </body>
 
 </html>
+
+<style>
+.overviewPage h6 {
+    display: none;
+}
+</style>

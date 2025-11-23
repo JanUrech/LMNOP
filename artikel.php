@@ -105,6 +105,65 @@ if (!empty($articleAuthors)) {
 } else {
   $authorsHTML = '<span>Unbekannt</span>';
 }
+
+// --- NEU: Ersetze WP-File-Blöcke durch klickbare Download-Boxen ---
+$pdfFiles = [];
+
+// Suche alle wp-block-file divs und extrahiere PDF-URLs
+if (preg_match_all('/<div[^>]*class=["\'][^"\']*wp-block-file[^"\']*["\'][^>]*>([\s\S]*?)<\/div>/i', $remainingContent, $matches)) {
+    foreach ($matches[1] as $blockContent) {
+        // Extrahiere Datei-URL - zuerst aus data attribute, dann aus href
+        $url = '';
+        $fileName = 'PDF Dokument';
+        
+        // Versuche data attribute zu finden (aus object tag)
+        if (preg_match('/data=["\']([^"\']+\.pdf)["\']/', $blockContent, $urlMatch)) {
+            $url = $urlMatch[1];
+        }
+        // Fallback: Suche href in <a> Tags
+        elseif (preg_match('/href=["\']([^"\']+\.pdf)["\']/', $blockContent, $urlMatch)) {
+            $url = $urlMatch[1];
+        }
+        
+        // Extrahiere Datei-Namen aus Text zwischen <a> Tags
+        if (preg_match('/<a[^>]*href=["\'][^"\']+\.pdf["\'][^>]*>([^<]+)<\/a>/i', $blockContent, $nameMatch)) {
+            $fileName = trim(strip_tags($nameMatch[1]));
+        }
+        
+        if (!empty($url)) {
+            $pdfFiles[] = [
+                'url' => $url,
+                'name' => !empty($fileName) ? $fileName : basename($url)
+            ];
+        }
+    }
+    
+    // Ersetze wp-block-file Blöcke durch neue klickbare Box-Links
+    $remainingContent = preg_replace_callback(
+        '/<div[^>]*class=["\'][^"\']*wp-block-file[^"\']*["\'][^>]*>([\s\S]*?)<\/div>/i',
+        function($m) use (&$pdfFiles) {
+            if (empty($pdfFiles)) return $m[0];
+            $file = array_shift($pdfFiles); // nimm nächste PDF aus Liste
+            $fileName = htmlspecialchars($file['name']);
+            $fileUrl = htmlspecialchars($file['url']);
+            $downloadName = basename($file['name'], '.pdf') . '.pdf';
+            
+            return '
+            <a href="' . $fileUrl . '" class="wp-block-file-box" download="' . htmlspecialchars($downloadName) . '" title="' . $fileName . ' herunterladen">
+                <div class="wp-block-file-box-content">
+                    <div class="wp-block-file-box-text">
+                        <div class="wp-block-file-box-name">' . $fileName . '</div>
+                        <div class="wp-block-file-box-action">Herunterladen</div>
+                    </div>
+                </div>
+            </a>
+            ';
+        },
+        $remainingContent
+    );
+}
+
+// --- ENDE WP-File-Block Umwandlung ---
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -125,6 +184,11 @@ if (!empty($articleAuthors)) {
 
   <main class="articlePage">
     <article class="articleContent">
+      <?php if ($featuredImage): ?>
+        <img src="<?= htmlspecialchars($featuredImage) ?>" alt="<?= htmlspecialchars($title) ?>"
+          class="articleFeaturedImage">
+      <?php endif; ?>
+
       <h1><?= htmlspecialchars($title) ?></h1>
 
       <div class="articleMeta">
@@ -142,10 +206,7 @@ if (!empty($articleAuthors)) {
         </div>
       <?php endif; ?>
 
-      <?php if ($featuredImage): ?>
-        <img src="<?= htmlspecialchars($featuredImage) ?>" alt="<?= htmlspecialchars($title) ?>"
-          class="articleFeaturedImage">
-      <?php endif; ?>
+
 
       <div class="articleBody">
         <?= $remainingContent ?>

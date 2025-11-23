@@ -216,3 +216,14 @@
 
     }
 }
+
+/* ================================
+   SPITZMARKE – Zusatzinformation
+   ================================ */
+.spitzmarke {
+    font-size: 0.85rem;
+    color: #656666;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
