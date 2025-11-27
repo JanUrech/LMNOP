@@ -93,23 +93,40 @@ foreach ($grouped as $catId => $posts) {
 
 // 5) Finde neueste Overview-Description pro Category (nur erster Absatz)
 $descriptions = [];
+$overviewSubtitles = []; // NEU: Speichere H6 pro Kategorie
+
 foreach ($overviewPosts as $op) {
-    $cats = $op['categories'] ?? [];
-    $otherCats = array_filter($cats, function($c) use ($overviewCatId) {
-        return $c !== $overviewCatId;
-    });
-    
-    // Nutze ersten Absatz aus Content statt Excerpt
     $content = $op['content']['rendered'] ?? '';
     $firstParagraph = getFirstParagraph($content);
+    $secondParagraph = getSecondParagraph($content);
     $date = strtotime($op['date'] ?? '1970-01-01');
     
-    foreach ($otherCats as $catId) {
-        if (!isset($descriptions[$catId]) || $date > $descriptions[$catId]['date']) {
-            $descriptions[$catId] = [
-                'text' => $firstParagraph,
-                'date' => $date
-            ];
+    // Extrahiere H6 Untertitel aus diesem Post
+    $h6Subtitle = '';
+    if (preg_match('/<h6[^>]*>([^<]+)<\/h6>/i', $content, $matches)) {
+        $h6Subtitle = trim(strip_tags(html_entity_decode($matches[1])));
+    }
+    
+    // GEÄNDERT: Für JEDE Kategorie (ausser Overview) einen Description speichern
+    // Basierend auf Post-Titel oder slug Matching
+    foreach ($grouped as $catId => $postsInCat) {
+        // Prüfe ob dieser Overview-Post zu dieser Kategorie gehört
+        // (z.B. Post-Slug oder Titel enthält Kategorie-Namen)
+        $postTitle = strtolower($op['title']['rendered'] ?? '');
+        $postSlug = strtolower($op['slug'] ?? '');
+        $catName = strtolower($catMap[$catId] ?? '');
+        
+        // Match wenn Kategorie-Name im Post-Slug oder Titel vorkommt
+        if (strpos($postSlug, str_replace(' ', '-', $catName)) !== false ||
+            strpos($postTitle, str_replace('-', ' ', $catName)) !== false) {
+            
+            if (!isset($descriptions[$catId]) || $date > $descriptions[$catId]['date']) {
+                $descriptions[$catId] = [
+                    'text' => !empty($secondParagraph) ? $secondParagraph : $firstParagraph,
+                    'date' => $date
+                ];
+                $overviewSubtitles[$catId] = $h6Subtitle;
+            }
         }
     }
 }
@@ -118,6 +135,7 @@ foreach ($overviewPosts as $op) {
 $result = [];
 foreach ($grouped as $catId => $postsInCat) {
     $description = $descriptions[$catId]['text'] ?? '';
+    $subtitle = $overviewSubtitles[$catId] ?? ''; // NEU: Hole H6 aus Array
     
     $articles = [];
     foreach ($postsInCat as $p) {
@@ -134,14 +152,17 @@ foreach ($grouped as $catId => $postsInCat) {
     }
     
     $result[] = [
-        'title'       => $catMap[$catId],
-        'slug'        => $catSlugMap[$catId],
-        'description' => $description,
-        'articles'    => $articles
+        'title'              => $catMap[$catId],
+        'slug'               => $catSlugMap[$catId],
+        'description'        => $description,
+        'overviewSubtitle'   => $subtitle, // NEU: H6 Untertitel
+        'articles'           => $articles
     ];
 }
 
 // Debug log file output
+$debugLog['overviewSubtitles'] = $overviewSubtitles;
+$debugLog['grouped_categories'] = array_keys($grouped);
 file_put_contents('debug_categories.json', json_encode($debugLog, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 echo json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
