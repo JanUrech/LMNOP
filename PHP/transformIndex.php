@@ -1,169 +1,169 @@
 <?php
 // filepath: c:\Users\janic\OneDrive - FH Graubünden\Journalismus Multimedial\08_Formatentwicklung\02Webseite\LMNOP Webseite\LMNOP\PHP\transformIndex.php
-header('Content-Type: application/json; charset=utf-8');
 
-// Hilfsfunktion: Extrahiere ersten Paragraphen
+// Hilfsfunktion: Extrahiere H6 (Spitzmarke)
+function getH6($content) {
+    $content = html_entity_decode($content);
+    // Erlaube auch Tags innerhalb von H6 (wie <strong>)
+    if (preg_match('/<h6[^>]*>(.*?)<\/h6>/is', $content, $matches)) {
+        return trim(strip_tags($matches[1]));
+    }
+    return '';
+}
+
+// Hilfsfunktion: Extrahiere ersten Paragraphen (Lead)
 function getFirstParagraph($content) {
+    $content = html_entity_decode($content);
     if (preg_match('/<p[^>]*>(.*?)<\/p>/is', $content, $matches)) {
         return strip_tags($matches[1]);
     }
     return strip_tags($content);
 }
 
-// 1) Posts mit _embed holen
-$postsUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/posts?_embed&per_page=100';
-$ch = curl_init($postsUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-$postsJson = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
-
-if ($httpCode < 200 || $httpCode >= 300 || !$postsJson) {
-    http_response_code(502);
-    echo json_encode(['error' => 'Failed to fetch posts', 'http_code' => $httpCode]);
-    exit;
-}
-
-$posts = json_decode($postsJson, true);
-if (!is_array($posts)) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Invalid JSON from WP API']);
-    exit;
-}
-
-// 2) Hole alle Categories
-$catsUrl = "https://wp-lmnop.janicure.ch/wp-json/wp/v2/categories?per_page=100";
-$ch2 = curl_init($catsUrl);
-curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch2, CURLOPT_TIMEOUT, 10);
-$catsJson = curl_exec($ch2);
-curl_close($ch2);
-
-$categories = json_decode($catsJson, true) ?: [];
-$catMap = [];
-$catSlugMap = [];
-$overviewCatId = null;
-foreach ($categories as $cat) {
-    $catMap[$cat['id']] = $cat['name'];
-    $catSlugMap[$cat['id']] = $cat['slug'];
-    if (strtolower($cat['name']) === 'overview') {
-        $overviewCatId = $cat['id'];
+/**
+ * Hauptfunktion - kann direkt aufgerufen oder als JSON-Endpoint genutzt werden
+ */
+function getTransformedTopics() {
+    // === PARALLELE API-REQUESTS mit curl_multi ===
+    $postsUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/posts?_embed&per_page=100';
+    $catsUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/categories?per_page=100';
+    
+    // Multi-Handle erstellen
+    $mh = curl_multi_init();
+    
+    // Posts-Request
+    $ch1 = curl_init($postsUrl);
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch1, CURLOPT_TIMEOUT, 15);
+    curl_setopt($ch1, CURLOPT_FOLLOWLOCATION, true);
+    curl_multi_add_handle($mh, $ch1);
+    
+    // Categories-Request
+    $ch2 = curl_init($catsUrl);
+    curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch2, CURLOPT_TIMEOUT, 15);
+    curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
+    curl_multi_add_handle($mh, $ch2);
+    
+    // Beide Requests parallel ausführen
+    $running = null;
+    do {
+        curl_multi_exec($mh, $running);
+        curl_multi_select($mh);
+    } while ($running > 0);
+    
+    // Ergebnisse holen
+    $postsJson = curl_multi_getcontent($ch1);
+    $catsJson = curl_multi_getcontent($ch2);
+    
+    // Cleanup
+    curl_multi_remove_handle($mh, $ch1);
+    curl_multi_remove_handle($mh, $ch2);
+    curl_close($ch1);
+    curl_close($ch2);
+    curl_multi_close($mh);
+    
+    // Posts verarbeiten
+    $posts = json_decode($postsJson, true);
+    if (!is_array($posts)) {
+        return [];
     }
-}
-
-// Debug log after categories fetch
-$debugLog = [
-    'total_categories' => count($categories),
-    'category_names' => array_map(function($cat) {
-        return $cat['name'];
-    }, $categories),
-    'posts_per_category' => []
-];
-
-// 3) Trenne Overview-Posts und normale Posts
-$overviewPosts = [];
-$normalPosts = [];
-foreach ($posts as $post) {
-    $cats = $post['categories'] ?? [];
-    if (in_array($overviewCatId, $cats, true)) {
-        $overviewPosts[] = $post;
-    } else {
-        $normalPosts[] = $post;
-    }
-}
-
-// 4) Gruppiere normale Posts nach Category-ID
-$grouped = [];
-foreach ($normalPosts as $post) {
-    $cats = $post['categories'] ?? [];
-    foreach ($cats as $catId) {
-        if ($catId === $overviewCatId) continue;
-        if (!isset($grouped[$catId])) {
-            $grouped[$catId] = [];
+    
+    // Categories verarbeiten
+    $categories = json_decode($catsJson, true) ?: [];
+    $catMap = [];
+    $catSlugMap = [];
+    $overviewCatId = null;
+    
+    foreach ($categories as $cat) {
+        $catMap[$cat['id']] = $cat['name'];
+        $catSlugMap[$cat['id']] = $cat['slug'];
+        if (strtolower($cat['name']) === 'overview') {
+            $overviewCatId = $cat['id'];
         }
-        $grouped[$catId][] = $post;
-    }
-}
-
-// Debug log after grouping posts
-foreach ($grouped as $catId => $posts) {
-    $debugLog['posts_per_category'][$catMap[$catId]] = count($posts);
-}
-
-// 5) Finde neueste Overview-Description pro Category (nur erster Absatz)
-$descriptions = [];
-$overviewSubtitles = []; // NEU: Speichere H6 pro Kategorie
-
-foreach ($overviewPosts as $op) {
-    $content = $op['content']['rendered'] ?? '';
-    $firstParagraph = getFirstParagraph($content);
-    $secondParagraph = getSecondParagraph($content);
-    $date = strtotime($op['date'] ?? '1970-01-01');
-    
-    // Extrahiere H6 Untertitel aus diesem Post
-    $h6Subtitle = '';
-    if (preg_match('/<h6[^>]*>([^<]+)<\/h6>/i', $content, $matches)) {
-        $h6Subtitle = trim(strip_tags(html_entity_decode($matches[1])));
     }
     
-    // GEÄNDERT: Für JEDE Kategorie (ausser Overview) einen Description speichern
-    // Basierend auf Post-Titel oder slug Matching
-    foreach ($grouped as $catId => $postsInCat) {
-        // Prüfe ob dieser Overview-Post zu dieser Kategorie gehört
-        // (z.B. Post-Slug oder Titel enthält Kategorie-Namen)
-        $postTitle = strtolower($op['title']['rendered'] ?? '');
-        $postSlug = strtolower($op['slug'] ?? '');
-        $catName = strtolower($catMap[$catId] ?? '');
+    // Trenne Overview-Posts und normale Posts in einem Durchlauf
+    $overviewPosts = [];
+    $grouped = [];
+    
+    foreach ($posts as $post) {
+        $cats = $post['categories'] ?? [];
+        $isOverview = in_array($overviewCatId, $cats, true);
         
-        // Match wenn Kategorie-Name im Post-Slug oder Titel vorkommt
-        if (strpos($postSlug, str_replace(' ', '-', $catName)) !== false ||
-            strpos($postTitle, str_replace('-', ' ', $catName)) !== false) {
-            
-            if (!isset($descriptions[$catId]) || $date > $descriptions[$catId]['date']) {
-                $descriptions[$catId] = [
-                    'text' => !empty($secondParagraph) ? $secondParagraph : $firstParagraph,
-                    'date' => $date
-                ];
-                $overviewSubtitles[$catId] = $h6Subtitle;
+        if ($isOverview) {
+            $overviewPosts[] = $post;
+        } else {
+            // Direkt gruppieren statt zweimal iterieren
+            foreach ($cats as $catId) {
+                if ($catId !== $overviewCatId) {
+                    $grouped[$catId][] = $post;
+                }
             }
         }
     }
-}
-
-// 6) Baue Zielstruktur
-$result = [];
-foreach ($grouped as $catId => $postsInCat) {
-    $description = $descriptions[$catId]['text'] ?? '';
-    $subtitle = $overviewSubtitles[$catId] ?? ''; // NEU: Hole H6 aus Array
     
-    $articles = [];
-    foreach ($postsInCat as $p) {
-        $imageUrl = '';
-        if (!empty($p['_embedded']['wp:featuredmedia'][0]['source_url'])) {
-            $imageUrl = $p['_embedded']['wp:featuredmedia'][0]['source_url'];
+    // Finde neueste Overview-Post pro Category
+    // Overview-Posts haben ZWEI Kategorien: Overview + die zugehörige Themen-Kategorie
+    $overviewData = [];
+    
+    foreach ($overviewPosts as $op) {
+        $content = $op['content']['rendered'] ?? '';
+        $date = strtotime($op['date'] ?? '1970-01-01');
+        $postCategories = $op['categories'] ?? [];
+        
+        // Finde die Nicht-Overview-Kategorie dieses Posts
+        foreach ($postCategories as $catId) {
+            // Überspringe die Overview-Kategorie selbst
+            if ($catId === $overviewCatId) {
+                continue;
+            }
+            
+            // Prüfe ob diese Kategorie in unseren gruppierten Posts existiert
+            if (isset($grouped[$catId])) {
+                // Nur speichern wenn neuer als vorhandene Daten
+                if (!isset($overviewData[$catId]) || $date > $overviewData[$catId]['date']) {
+                    $overviewData[$catId] = [
+                        'spitzmarke' => getH6($content),
+                        'lead'       => getFirstParagraph($content),
+                        'date'       => $date
+                    ];
+                }
+            }
         }
-        $articles[] = [
-            'title' => $p['title']['rendered'] ?? '',
-            'slug'  => $p['slug'] ?? '',
-            'link'  => $p['link'] ?? '',
-            'image' => $imageUrl
+    }
+    
+    // Baue Zielstruktur
+    $result = [];
+    foreach ($grouped as $catId => $postsInCat) {
+        $articles = [];
+        foreach ($postsInCat as $p) {
+            $imageUrl = $p['_embedded']['wp:featuredmedia'][0]['source_url'] ?? '';
+            $articles[] = [
+                'title' => $p['title']['rendered'] ?? '',
+                'slug'  => $p['slug'] ?? '',
+                'link'  => $p['link'] ?? '',
+                'image' => $imageUrl,
+                'date'  => $p['date'] ?? ''
+            ];
+        }
+        
+        $result[] = [
+            'title'       => $catMap[$catId] ?? '',
+            'slug'        => $catSlugMap[$catId] ?? '',
+            'spitzmarke'  => $overviewData[$catId]['spitzmarke'] ?? '',
+            'lead'        => $overviewData[$catId]['lead'] ?? '',
+            'articles'    => $articles
         ];
     }
     
-    $result[] = [
-        'title'              => $catMap[$catId],
-        'slug'               => $catSlugMap[$catId],
-        'description'        => $description,
-        'overviewSubtitle'   => $subtitle, // NEU: H6 Untertitel
-        'articles'           => $articles
-    ];
+    return $result;
 }
 
-// Debug log file output
-$debugLog['overviewSubtitles'] = $overviewSubtitles;
-$debugLog['grouped_categories'] = array_keys($grouped);
-file_put_contents('debug_categories.json', json_encode($debugLog, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-echo json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+// Wenn direkt aufgerufen (als API-Endpoint), JSON ausgeben
+if (basename($_SERVER['SCRIPT_FILENAME'] ?? '') === 'transformIndex.php') {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(getTransformedTopics(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    exit;
+}
 ?>

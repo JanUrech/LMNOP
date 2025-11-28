@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Rewrite uebersicht.php?slug=... zu /uebersicht/...
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^uebersicht/([a-z0-9\-]+)/?$ uebersicht.php?slug=$1 [QSA,L]
+
+# Rewrite artikel.php?slug=... zu /artikel/...
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^artikel/([a-z0-9\-]+)/?$ artikel.php?slug=$1 [QSA,L]
+</IfModule>

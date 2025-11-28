@@ -1,0 +1,32 @@
+# Standard Rules für alle Crawler
+User-agent: *
+Allow: /
+Disallow: /PHP/
+Disallow: /style/
+Disallow: /js/
+Disallow: /media/
+Disallow: /*.json$
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /?s=
+Disallow: /suche.php
+
+# Sitemap (auf PHP-Datei zeigend)
+Sitemap: https://lmnop.janicure.ch/sitemap.php
+
+# Crawl-delay für bessere Server-Performance
+Crawl-delay: 1
+
+# Spezifische Rules für Google
+User-agent: Googlebot
+Allow: /
+
+# Spezifische Rules für Bing
+User-agent: Bingbot
+Allow: /
+
+# Block für schädliche Crawler
+User-agent: MJ12bot
+User-agent: AhrefsBot
+User-agent: SemrushBot
+Disallow: /
