@@ -124,14 +124,14 @@ a.sideArticle {
 /* Aspect Ratio Container für YouTube Videos (16:9) */
 .wp-block-embed__wrapper:has(iframe[src*="youtube.com"]),
 .wp-block-embed__wrapper:has(iframe[src*="youtu.be"]) {
-    padding-bottom: 56.25%;
-    /* 16:9 Aspect Ratio */
-    height: 0;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    overflow: hidden;
 }
 
 /* Aspect Ratio für Spotify Embeds */
 .wp-block-embed__wrapper:has(iframe[src*="spotify.com"]) {
-    padding-bottom: 0;
+    aspect-ratio: auto;
     /* Spotify hat fixe Höhen */
     min-width: 300px;
     /* Minimale Breite für Bedienbarkeit */
@@ -139,9 +139,7 @@ a.sideArticle {
 
 /* iframe nimmt volle Größe des Containers ein */
 .wp-block-embed__wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     height: 100%;
     border: none;
@@ -149,7 +147,6 @@ a.sideArticle {
 
 /* Spotify Embeds - Mobile First (Hochformat mit Cover) */
 .wp-block-embed__wrapper:has(iframe[src*="spotify.com"]) iframe {
-    position: relative;
     height: 352px;
     /* Hochformat mit Cover-Bild für Mobile */
     min-height: 352px;
