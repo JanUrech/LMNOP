@@ -128,7 +128,7 @@
     font-family: "itc-avant-garde-gothic-pro", sans-serif;
     font-weight: 700;
     font-style: normal;
-    font-size: 1rem;
+    font-size: 0.8rem;
     line-height: 1.4;
     text-align: left;
     color: black;
@@ -189,6 +189,10 @@
         justify-content: center;
     }
 
+    .sideArticleText {
+        font-size: 1rem;
+    }
+
     /* Side Articles vertikal zentriert neben Hero (Desktop) */
     .sideArticle {
         top: 50%;
@@ -227,5 +231,5 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-align: center;
-    
+
 }
