@@ -152,7 +152,7 @@ footer {
 }
 
 #footerMenu {
-    align-items: left;
+    align-items: flex-start;
     height: max-content;
     justify-content: space-around;
     display: flex;
