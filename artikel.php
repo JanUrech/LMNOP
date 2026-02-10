@@ -8,20 +8,44 @@ if (empty($slug)) {
   exit;
 }
 
-// Hole Post-Daten von WP API
-$postUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/posts?slug=' . urlencode($slug) . '&_embed';
-$ch = curl_init($postUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-$response = curl_exec($ch);
-$http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
+// === CACHING SYSTEM ===
+$cacheFile = __DIR__ . '/cache/artikel_' . md5($slug) . '.json';
+$cacheTime = 300; // 5 Minuten Cache
 
 $post = null;
-if ($http >= 200 && $http < 300 && $response) {
-  $posts = json_decode($response, true);
-  if (!empty($posts) && is_array($posts)) {
-    $post = $posts[0];
+
+// Prüfe ob Cache existiert und noch gültig ist
+if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheTime) {
+  // Cache ist gültig - direkt laden
+  $post = json_decode(file_get_contents($cacheFile), true);
+} else {
+  // Cache fehlt oder abgelaufen - von API laden
+  $postUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/posts?slug=' . urlencode($slug) . '&_embed';
+  $ch = curl_init($postUrl);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Reduziert von 10 auf 5 Sekunden
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3); // Max 3 Sek für Verbindungsaufbau
+  curl_setopt($ch, CURLOPT_ENCODING, 'gzip'); // GZIP-Kompression aktivieren
+  curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0); // HTTP/2 für bessere Performance
+  curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1); // Keep-Alive aktivieren
+  curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 600); // DNS-Cache für 10 Minuten
+  $response = curl_exec($ch);
+  $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  curl_close($ch);
+
+  if ($http >= 200 && $http < 300 && $response) {
+    $posts = json_decode($response, true);
+    if (!empty($posts) && is_array($posts)) {
+      $post = $posts[0];
+      
+      // Cache-Verzeichnis erstellen falls nicht vorhanden
+      if (!is_dir(__DIR__ . '/cache')) {
+        mkdir(__DIR__ . '/cache', 0755, true);
+      }
+      
+      // In Cache speichern
+      file_put_contents($cacheFile, json_encode($post, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
   }
 }
 

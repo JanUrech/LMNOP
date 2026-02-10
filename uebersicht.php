@@ -8,57 +8,129 @@ if (empty($categorySlug)) {
   exit;
 }
 
-// Hole Category ID
-$catUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/categories?slug=' . urlencode($categorySlug);
-$ch = curl_init($catUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-$catResponse = curl_exec($ch);
-curl_close($ch);
+// === CACHING SYSTEM ===
+$cacheFile = __DIR__ . '/cache/overview_' . md5($categorySlug) . '.json';
+$cacheTime = 300; // 5 Minuten Cache
 
-$category = null;
-$categoryId = null;
-if ($catResponse) {
-  $cats = json_decode($catResponse, true);
-  if (!empty($cats) && is_array($cats)) {
-    $category = $cats[0];
-    $categoryId = $category['id'];
+$cachedData = null;
+
+// Prüfe ob Cache existiert und noch gültig ist
+if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheTime) {
+  // Cache ist gültig - direkt laden
+  $cachedData = json_decode(file_get_contents($cacheFile), true);
+}
+
+if ($cachedData) {
+  // Aus Cache laden
+  $category = $cachedData['category'];
+  $categoryId = $cachedData['categoryId'];
+  $posts = $cachedData['posts'];
+  $overviewCatId = $cachedData['overviewCatId'];
+} else {
+  // Von API laden - PARALLEL mit curl_multi für bessere Performance
+  $catUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/categories?slug=' . urlencode($categorySlug);
+  $overviewCatUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/categories?slug=overview';
+  
+  // Multi-Handle erstellen
+  $mh = curl_multi_init();
+  
+  // Request 1: Category
+  $ch1 = curl_init($catUrl);
+  curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch1, CURLOPT_TIMEOUT, 5);
+  curl_setopt($ch1, CURLOPT_CONNECTTIMEOUT, 3);
+  curl_setopt($ch1, CURLOPT_ENCODING, 'gzip');
+  curl_setopt($ch1, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+  curl_setopt($ch1, CURLOPT_TCP_KEEPALIVE, 1);
+  curl_setopt($ch1, CURLOPT_DNS_CACHE_TIMEOUT, 600);
+  curl_multi_add_handle($mh, $ch1);
+  
+  // Request 2: Overview Category
+  $ch2 = curl_init($overviewCatUrl);
+  curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch2, CURLOPT_TIMEOUT, 5);
+  curl_setopt($ch2, CURLOPT_CONNECTTIMEOUT, 3);
+  curl_setopt($ch2, CURLOPT_ENCODING, 'gzip');
+  curl_setopt($ch2, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+  curl_setopt($ch2, CURLOPT_TCP_KEEPALIVE, 1);
+  curl_setopt($ch2, CURLOPT_DNS_CACHE_TIMEOUT, 600);
+  curl_multi_add_handle($mh, $ch2);
+  
+  // Beide Requests parallel ausführen
+  $running = null;
+  do {
+    curl_multi_exec($mh, $running);
+    curl_multi_select($mh);
+  } while ($running > 0);
+  
+  // Ergebnisse holen
+  $catResponse = curl_multi_getcontent($ch1);
+  $ovResponse = curl_multi_getcontent($ch2);
+  
+  // Cleanup
+  curl_multi_remove_handle($mh, $ch1);
+  curl_multi_remove_handle($mh, $ch2);
+  curl_close($ch1);
+  curl_close($ch2);
+  curl_multi_close($mh);
+
+  // Category verarbeiten
+  $category = null;
+  $categoryId = null;
+  if ($catResponse) {
+    $cats = json_decode($catResponse, true);
+    if (!empty($cats) && is_array($cats)) {
+      $category = $cats[0];
+      $categoryId = $category['id'];
+    }
   }
-}
 
-if (!$category) {
-  header('HTTP/1.0 404 Not Found');
-  echo '<h1>Thema nicht gefunden</h1>';
-  exit;
-}
-
-// Hole alle Posts dieser Category
-$postsUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/posts?categories=' . $categoryId . '&_embed&per_page=100';
-$ch2 = curl_init($postsUrl);
-curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch2, CURLOPT_TIMEOUT, 10);
-$postsResponse = curl_exec($ch2);
-curl_close($ch2);
-
-$posts = [];
-if ($postsResponse) {
-  $posts = json_decode($postsResponse, true) ?: [];
-}
-
-// Hole Overview-Category ID
-$overviewCatUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/categories?slug=overview';
-$chOv = curl_init($overviewCatUrl);
-curl_setopt($chOv, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($chOv, CURLOPT_TIMEOUT, 5);
-$ovResponse = curl_exec($chOv);
-curl_close($chOv);
-
-$overviewCatId = null;
-if ($ovResponse) {
-  $ovCats = json_decode($ovResponse, true);
-  if (!empty($ovCats) && is_array($ovCats)) {
-    $overviewCatId = $ovCats[0]['id'];
+  if (!$category) {
+    header('HTTP/1.0 404 Not Found');
+    echo '<h1>Thema nicht gefunden</h1>';
+    exit;
   }
+  
+  // Overview Category ID
+  $overviewCatId = null;
+  if ($ovResponse) {
+    $ovCats = json_decode($ovResponse, true);
+    if (!empty($ovCats) && is_array($ovCats)) {
+      $overviewCatId = $ovCats[0]['id'];
+    }
+  }
+
+  // Jetzt Posts laden (muss nach Category ID bekannt ist)
+  $postsUrl = 'https://wp-lmnop.janicure.ch/wp-json/wp/v2/posts?categories=' . $categoryId . '&_embed&per_page=100';
+  $ch3 = curl_init($postsUrl);
+  curl_setopt($ch3, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch3, CURLOPT_TIMEOUT, 5);
+  curl_setopt($ch3, CURLOPT_CONNECTTIMEOUT, 3);
+  curl_setopt($ch3, CURLOPT_ENCODING, 'gzip');
+  curl_setopt($ch3, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+  curl_setopt($ch3, CURLOPT_TCP_KEEPALIVE, 1);
+  curl_setopt($ch3, CURLOPT_DNS_CACHE_TIMEOUT, 600);
+  $postsResponse = curl_exec($ch3);
+  curl_close($ch3);
+
+  $posts = [];
+  if ($postsResponse) {
+    $posts = json_decode($postsResponse, true) ?: [];
+  }
+  
+  // Cache-Verzeichnis erstellen falls nicht vorhanden
+  if (!is_dir(__DIR__ . '/cache')) {
+    mkdir(__DIR__ . '/cache', 0755, true);
+  }
+  
+  // In Cache speichern
+  $cacheData = [
+    'category' => $category,
+    'categoryId' => $categoryId,
+    'posts' => $posts,
+    'overviewCatId' => $overviewCatId
+  ];
+  file_put_contents($cacheFile, json_encode($cacheData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
 // Trenne Overview-Post und normale Posts
