@@ -7,14 +7,16 @@ const headerHTML = `
 </div>
   <menu id="headerMenu">
    <li><a href="index.php" class="headerMenuItem">Home</a></li>
-    <li><a href="aboutus.html" class="headerMenuItem">About us</a></li>
+    <li><a href="wasIstLmnop.html" class="headerMenuItem">Was ist LMNOP?</a></li>
+    <li><a href="aboutus.html" class="headerMenuItem">Das Team</a></li>
     <li><a href="impressum.html" class="headerMenuItem">Impressum</a></li>
   </menu>
 `;
 
 const footerHTML = `
     <ul id=footerMenu>
-      <li> <a href="aboutus.html" class="footerMenuItem">Über Uns</a></li>
+          <li> <a href="wasIstLmnop.html" class="footerMenuItem">Was ist LMNOP?</a></li>
+      <li> <a href="aboutus.html" class="footerMenuItem">Team</a></li>
       <li><a href="datenschutz.html" class="footerMenuItem">Datenschutzerklärung </a></li>
       <li><a href="impressum.html" class="footerMenuItem">Impressum </a></li>
       <li><a href="https://www.instagram.com/lmnop_mag/" class="footerMenuItem">Instagram </a></li>

@@ -1,0 +1,21 @@
+article {
+    margin-top: 3rem;
+    max-width: 40rem;
+}
+
+
+h2 {
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+.leftAligned {
+    text-align: left;
+    align-self: flex-start;
+}
+
+.rightAligned {
+    text-align: right;
+    align-self: flex-end;
+}
